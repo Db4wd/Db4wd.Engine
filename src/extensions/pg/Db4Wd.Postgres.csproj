@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>pg4</ToolCommandName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\engine\Db4Wd.Engine.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="8.0.5" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+
+</Project>
