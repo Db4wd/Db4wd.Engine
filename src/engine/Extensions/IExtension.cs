@@ -11,6 +11,11 @@ public interface IExtension
     string RootContext { get; }
     
     /// <summary>
+    /// Gets the default extension of migration files.
+    /// </summary>
+    string DefaultFileExtension { get; }
+    
+    /// <summary>
     /// Gets any properties that should be displayed by the version feature.
     /// </summary>
     IReadOnlyDictionary<string, string> Properties { get; }
@@ -32,4 +37,12 @@ public interface IExtension
         ConnectorProperties connectorProperties,
         Version version,
         CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Writes a template environment file
+    /// </summary>
+    /// <param name="writer">Text writer that represents the output stream</param>
+    /// <param name="cancellationToken">Token observed for cancellation</param>
+    /// <returns>Task</returns>
+    Task WriteEnvironmentTemplateAsync(TextWriter writer, CancellationToken cancellationToken);
 }

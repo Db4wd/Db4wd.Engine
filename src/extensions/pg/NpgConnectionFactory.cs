@@ -1,4 +1,5 @@
 using Db4Wd.Logging;
+using Db4Wd.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -43,7 +44,10 @@ public sealed class NpgConnectionFactory(IConfiguration configuration, ILogger<N
 
         foreach (var section in configuration.GetChildren())
         {
-            if (section.Key.Equals("ENV_FILE", StringComparison.OrdinalIgnoreCase))
+            if (Common.IsEnvironmentFilePathVariable(PostgresExtension.ApplicationId, section.Key))
+                continue;
+
+            if (string.IsNullOrWhiteSpace(section.Value))
                 continue;
             
             TrySetValue(builder, section.Key, section.Value);

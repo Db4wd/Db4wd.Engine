@@ -3,7 +3,9 @@ using Db4Wd.Configuration;
 using Db4Wd.Extensions;
 using Db4Wd.Features;
 using Db4Wd.Logging;
+using Db4Wd.Services;
 using Db4Wd.Startup;
+using Db4Wd.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,6 +47,10 @@ public sealed class EngineHost(
         {
             logger.LogError("Error occurred: {message}", exception.Message);
         }
+        catch (Exception exception) when (exception is IFormattedOutputException formattedOutputException)
+        {
+            formattedOutputException.Log(logger);
+        }
         catch (Exception exception)
         {
             logger.LogError(exception, "Unhandled exception occurred");
@@ -77,6 +83,8 @@ public sealed class EngineHost(
                 .WithSingletonLifetime())
             .AddSingleton(BuildConfiguration(options))
             .AddSingleton(new AgentContext(options.TimeZoneOffset))
+            .AddSingleton<SchemaManagementOperator>()
+            .AddSingleton<ISourceFileLoader, CachingSourceFileLoader>()
             .AddConsoleLogging(options.LogLevel)
             .AddStartupServices()
             .BuildServiceProvider();
@@ -84,7 +92,7 @@ public sealed class EngineHost(
 
     private IConfiguration BuildConfiguration<TOptions>(TOptions options)
     {
-        if (Environment.GetEnvironmentVariable($"{rootContext.ToUpper()}_ENV_FILE") is { } path)
+        if (Common.GetEnvironmentFilePath(rootContext) is { } path)
         {
             configurationBuilder.AddJsonFile(path);
         }

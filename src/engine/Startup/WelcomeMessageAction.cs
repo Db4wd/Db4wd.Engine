@@ -1,4 +1,5 @@
 using Db4Wd.Engine;
+using Db4Wd.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Db4Wd.Startup;
@@ -25,8 +26,7 @@ public sealed class WelcomeMessageAction(ILogger<WelcomeMessageAction> logger) :
     private static bool TryDisplayMessage(Version version)
     {
         var path = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            ".db4wd",
+            Common.ProgramDataPath,
             "messages");
         
         var filePath = Path.Combine(path, $"welcome_{version}.txt");

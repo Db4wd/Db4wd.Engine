@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace Db4Wd.Postgres.Schema;
 
-public interface IPostgresConnector : IMigrationConnector
+public interface IPostgresConnector : IDatabaseConnector
 {
     /// <summary>
     /// Gets the version.

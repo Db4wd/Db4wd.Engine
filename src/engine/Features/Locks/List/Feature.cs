@@ -4,10 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Db4Wd.Features.Locks.List;
 
-public sealed class Feature(
-    IExtension extension,
-    ILogger<Feature> logger) 
-    : IFeature<Options>
+public sealed class Feature(IExtension extension, ILogger<Feature> logger) : IFeature<Options>
 {
     /// <inheritdoc />
     public async Task<int> HandleAsync(Options options, CancellationToken cancellationToken)

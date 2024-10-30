@@ -3,7 +3,7 @@ namespace Db4Wd.Extensions;
 public sealed class ConnectorProperties(
     Version? installedVersion,
     IReadOnlyCollection<Version> availableVersions,
-    IMigrationConnector? connector)
+    IDatabaseConnector? connector)
 {
     public Version? InstalledVersion => installedVersion;
 
@@ -25,7 +25,7 @@ public sealed class ConnectorProperties(
         _ => false
     };
 
-    public IMigrationConnector GetInstance() => connector ?? throw new InvalidOperationException(
+    public IDatabaseConnector GetInstance() => connector ?? throw new InvalidOperationException(
         "Connector not initialized");
 
     /// <inheritdoc />

@@ -1,18 +1,14 @@
-using Db4Wd.Extensions;
-using Db4Wd.Features.Shared;
-using Microsoft.Extensions.Logging;
+using Db4Wd.Services;
 
 namespace Db4Wd.Features.Init;
 
-public sealed class Feature(IExtension extension, ILogger<Feature> logger) : 
-    SchemaManagementFeature<Options>(extension, logger)
+public sealed class Feature(SchemaManagementOperator managementOperator) : IFeature<Options>
 {
     /// <inheritdoc />
-    public override async Task<int> HandleAsync(Options options, CancellationToken cancellationToken)
+    public async Task<int> HandleAsync(Options options, CancellationToken cancellationToken)
     {
-        var connectorInfo = await Extension.InitializeAsync(cancellationToken);
-        var targetVersion = connectorInfo.InstalledVersion ?? connectorInfo.NewestVersion;
-
-        return await HandleCoreAsync(connectorInfo, targetVersion, cancellationToken);
+        return await managementOperator.ApplyVersionAsync(
+            properties => properties.InstalledVersion ?? properties.NewestVersion,
+            cancellationToken);
     }
 }

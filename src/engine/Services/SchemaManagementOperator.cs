@@ -2,23 +2,21 @@ using Db4Wd.Extensions;
 using Db4Wd.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace Db4Wd.Features.Shared;
+namespace Db4Wd.Services;
 
-public abstract class SchemaManagementFeature<TOptions>(IExtension extension, ILogger logger) 
-    : IFeature<TOptions> where TOptions : ConnectionOptions
+public sealed class SchemaManagementOperator(IExtension extension, ILogger<SchemaManagementOperator> logger)
 {
-    protected IExtension Extension => extension;
-    
-    /// <inheritdoc />
-    public abstract Task<int> HandleAsync(TOptions options, CancellationToken cancellationToken);
-
-    protected async Task<int> HandleCoreAsync(
-        ConnectorProperties connectorProperties,
-        System.Version targetVersion,
+    public async Task<int> ApplyVersionAsync(
+        Func<ConnectorProperties, Version> versionProvider,
         CancellationToken cancellationToken)
     {
-        var result = await extension.UpdateManagementVersionAsync(connectorProperties, targetVersion, cancellationToken);
-
+        var connectorProperties = await extension.InitializeAsync(cancellationToken);
+        var targetVersion = versionProvider(connectorProperties);
+        var result = await extension.UpdateManagementVersionAsync(
+            connectorProperties,
+            targetVersion,
+            cancellationToken);
+        
         switch (result)
         {
             case ConnectorInstallation.Initialized:

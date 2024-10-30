@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Versions = Db4Wd.Postgres.Schema;
 
 var engine = new EngineHostBuilder(
-        "pg4", 
+        PostgresExtension.ApplicationId, 
         "Manages migrations in a Postgres database")
     .AddExtension<PostgresExtension>()
     .ConfigureServices(services => services
@@ -26,6 +26,7 @@ string[] locksHelpArgs = ["locks", "--help"];
 string[] listLocksArgs = ["locks", "list", "--env:/Users/dan/pg-local.json", "-v:trace"];
 string[] deleteLockArgs = ["locks", "delete", "--id", "96490cb7-81bf-477a-8c1b-2f304dd3f1e2", "--env:/Users/dan/pg-local.json", "-v:trace"];
 string[] deleteLocksArgs = ["locks", "delete", "--all", "--env:/Users/dan/pg-local.json", "-v:trace"];
+string[] newEnvArgs = ["env", "localhost", "--overwrite"];
 
 var result = await engine.ExecuteAsync(args);
 return result;    

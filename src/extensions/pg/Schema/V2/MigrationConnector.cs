@@ -7,16 +7,14 @@ using Npgsql;
 
 namespace Db4Wd.Postgres.Schema.V2;
 
-public class MigrationConnector(
+public sealed class MigrationConnector(
     NpgConnectionFactory connectionFactory, 
     AgentContext agentContext,
-    ILogger<MigrationConnector> logger) : IPostgresConnector
+    ILogger<MigrationConnector> logger)
+    : PostgresConnector(connectionFactory, agentContext, logger, new Version(1, 0, 1))
 {
     /// <inheritdoc />
-    public Version Version => new("1.0.1");
-
-    /// <inheritdoc />
-    public async Task InstallAsync(NpgsqlConnection connection, CancellationToken cancellationToken)
+    public override async Task InstallAsync(NpgsqlConnection connection, CancellationToken cancellationToken)
     {
         await using var transaction = await connection.BeginTransactionAsync(
             IsolationLevel.Serializable, 
@@ -46,17 +44,5 @@ public class MigrationConnector(
             commandTimeout: 5);
 
         await transaction.CommitAsync(cancellationToken);
-    }
-
-    /// <inheritdoc />
-    public async Task<IReadOnlyCollection<LockInfo>> GetLocksAsync(CancellationToken cancellationToken)
-    {
-        return await Shared.LockQuery.GetLocksAsync(connectionFactory, agentContext, cancellationToken);
-    }
-    
-    /// <inheritdoc />
-    public async Task<LockResult> TryReleaseLockAsync(Guid? id, CancellationToken cancellationToken)
-    {
-        return await Shared.DeleteLocks.ExecuteAsync(connectionFactory, id, logger, cancellationToken);
     }
 }

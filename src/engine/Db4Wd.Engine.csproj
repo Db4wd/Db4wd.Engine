@@ -9,7 +9,7 @@
   
   <ItemGroup>
     <PackageReference Include="vertical-spectreconsolelogger" Version="0.10.1-dev.20240326.31" />
-    <PackageReference Include="vertical-cli" Version="1.0.7-dev" />
+    <PackageReference Include="vertical-cli" Version="1.0.0-dev.20241029.37" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
