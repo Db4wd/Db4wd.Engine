@@ -9,8 +9,8 @@ namespace Db4Wd.Parsing;
 /// <param name="Metadata">Metadata key/value pairs</param>
 public record SourceFileHeader(
     string Context,
-    Guid? MigrationId,
-    int? DbVersion,
+    Guid MigrationId,
+    int DbVersion,
     KeyValuePair<string, string>[] Metadata)
 {
 }

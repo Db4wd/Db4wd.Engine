@@ -2,7 +2,7 @@ using Db4Wd.Extensions;
 using Db4Wd.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace Db4Wd.Services;
+namespace Db4Wd.Operators;
 
 public sealed class SchemaManagementOperator(IExtension extension, ILogger<SchemaManagementOperator> logger)
 {

@@ -1,3 +1,4 @@
+using Dapper;
 using Db4Wd.Engine;
 using Db4Wd.Extensions;
 using Db4Wd.Models;
@@ -13,28 +14,45 @@ public abstract class PostgresConnector(
     ILogger logger,
     Version version) : IPostgresConnector
 {
+    protected readonly NpgConnectionFactory ConnectionFactory = connectionFactory;
+    protected readonly AgentContext AgentContext = agentContext;
+    
     /// <inheritdoc />
     public virtual async Task<IReadOnlyCollection<LockInfo>> GetLocksAsync(CancellationToken cancellationToken)
     {
-        return await Shared.LockQuery.GetLocksAsync(connectionFactory, agentContext, cancellationToken);
+        return await Shared.LockQuery.GetLocksAsync(ConnectionFactory, AgentContext, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<LockResult> TryReleaseLockAsync(Guid? id, CancellationToken cancellationToken)
+    public virtual async Task<LockResult> TryReleaseLockAsync(Guid? id, CancellationToken cancellationToken)
     {
-        return await Shared.DeleteLocks.ExecuteAsync(connectionFactory, id, logger, cancellationToken);
+        return await Shared.DeleteLocks.ExecuteAsync(ConnectionFactory, id, logger, cancellationToken);
     }
 
     /// <inheritdoc />
-    public IMigrationSourceReader CreateSourceReader() => new PostgresSourceReader();
+    public virtual IMigrationSourceReader CreateSourceReader() => new PostgresSourceReader();
 
     /// <inheritdoc />
-    public async Task<IReadOnlyCollection<MigrationEntry>> GetMigrationEntriesAsync(
+    public async Task WriteTemplateMigrationAsync(
+        TextWriter writer, 
+        KeyValuePair<string, string>[] metadata, 
+        CancellationToken cancellationToken)
+    {
+        await Shared.WriteTemplate.WriteAsync(
+            ConnectionFactory,
+            AgentContext,
+            writer,
+            metadata,
+            cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<MigrationEntry[]> GetMigrationEntriesAsync(
         CancellationToken cancellationToken)
     {
         return await Shared.MigrationEntryQuery.QueryAsync(
-            connectionFactory,
-            agentContext,
+            ConnectionFactory,
+            AgentContext,
             cancellationToken);
     }
 

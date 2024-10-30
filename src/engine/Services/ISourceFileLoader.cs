@@ -13,7 +13,7 @@ public interface ISourceFileLoader
     /// <param name="matchPattern">Match pattern</param>
     /// <param name="cancellationToken">Token observed for cancellation</param>
     /// <returns>Collection of <see cref="SourceFileHeader"/></returns>
-    Task<IReadOnlyCollection<SourceFileHeader>> GetSourceFilesAsync(
+    Task<SourceFileHeader[]> GetSourceFilesAsync(
         IMigrationSourceReader sourceReader,
         DirectoryInfo basePath,
         string matchPattern,

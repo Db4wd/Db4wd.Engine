@@ -27,9 +27,21 @@ public interface IDatabaseConnector
     IMigrationSourceReader CreateSourceReader();
 
     /// <summary>
+    /// Writes a template migration file to the given text writer.
+    /// </summary>
+    /// <param name="writer">Text writer that encapsulates an underlying stream</param>
+    /// <param name="metadata">Metadata to include in the template</param>
+    /// <param name="cancellationToken">Token observed for cancellation</param>
+    /// <returns>Task</returns>
+    Task WriteTemplateMigrationAsync
+        (TextWriter writer,
+        KeyValuePair<string, string>[] metadata,
+        CancellationToken cancellationToken);
+
+    /// <summary>
     /// Gets all migration entries.
     /// </summary>
     /// <param name="cancellationToken">Token observed for cancellation</param>
     /// <returns><see cref="MigrationEntry"/> collection</returns>
-    Task<IReadOnlyCollection<MigrationEntry>> GetMigrationEntriesAsync(CancellationToken cancellationToken);
+    Task<MigrationEntry[]> GetMigrationEntriesAsync(CancellationToken cancellationToken);
 }

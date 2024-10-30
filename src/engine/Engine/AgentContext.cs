@@ -5,7 +5,7 @@ public sealed class AgentContext(TimeSpan timeZoneOffset)
     public TimeSpan TimeZoneOffset => timeZoneOffset;
     
     public string Agent { get; } = TryGetValue(
-        () => Environment.UserDomainName,
+        () => Environment.UserName,
         "(unavailable)");
 
     public string Host { get; } = TryGetValue(

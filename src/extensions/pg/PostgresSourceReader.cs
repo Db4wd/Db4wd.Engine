@@ -15,15 +15,18 @@ public sealed class PostgresSourceReader : SequentialSourceReader
 
         var directivePart = str[3..];
 
-        if (DirectiveStandardConventions.TryGetMigrationId(directivePart, out var id))
-            return new MigrationIdDirective(id);
-
-        if (DirectiveStandardConventions.TryGetDbVersionId(directivePart, out var version))
-            return new DbVersionDirective(version);
-
-        if (DirectiveStandardConventions.TryGetMetadataPair(directivePart, out var metadata))
-            return new MetadataDirective(metadata.Key, metadata.Value);
-
-        return new CommentDirective(directivePart);
+        return directivePart switch
+        {
+            "{head}" => new Directive(DirectiveType.StartHeader),
+            "{~head}" => new Directive(DirectiveType.EndHeader),
+            not null when DirectiveStandardConventions.TryGetMigrationId(directivePart, out var id) =>
+                new MigrationIdDirective(id),
+            not null when DirectiveStandardConventions.TryGetDbVersionId(directivePart, out var version) =>
+                new DbVersionDirective(version),
+            not null when DirectiveStandardConventions.TryGetMetadataPair(directivePart, out var metadata) =>
+                new MetadataDirective(metadata.Key, metadata.Value),
+            not null => new CommentDirective(directivePart),
+            _ => Directive.None
+        };
     }
 }

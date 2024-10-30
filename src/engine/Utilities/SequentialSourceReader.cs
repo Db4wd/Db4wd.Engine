@@ -68,11 +68,17 @@ public abstract class SequentialSourceReader : IMigrationSourceReader
             }
         }
 
-        return new SourceFileHeader(
-            context,
-            idDirective?.Value,
-            versionDirective?.Value,
-            metadata.ToArray());
+        if (idDirective == null)
+        {
+            throw new MigrationSourceException("Source file missing migration id directive", context);
+        }
+
+        if (versionDirective == null)
+        {
+            throw new MigrationSourceException("Source file missing db version directive", context);
+        }
+
+        return new SourceFileHeader(context, idDirective.Value, versionDirective.Value, metadata.ToArray());
     }
 
     protected abstract Directive MatchHeaderDirective(string str);

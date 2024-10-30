@@ -3,6 +3,7 @@ using Db4Wd.Configuration;
 using Db4Wd.Extensions;
 using Db4Wd.Features;
 using Db4Wd.Logging;
+using Db4Wd.Operators;
 using Db4Wd.Services;
 using Db4Wd.Startup;
 using Db4Wd.Utilities;
@@ -77,15 +78,14 @@ public sealed class EngineHost(
     private ServiceProvider BuildServiceProvider<TOptions>(TOptions options) where TOptions : GlobalOptions
     {
         return serviceCollection
-            .Scan(types => types.FromAssemblyOf<EngineHost>()
-                .AddClasses(classes => classes.AssignableTo(typeof(IFeature<>)))
-                .AsImplementedInterfaces()
-                .WithSingletonLifetime())
+            .AddConsoleLogging(options.LogLevel)
+            .AddFeatures()
             .AddSingleton(BuildConfiguration(options))
             .AddSingleton(new AgentContext(options.TimeZoneOffset))
             .AddSingleton<SchemaManagementOperator>()
+            .AddSingleton<MigrationOperator>()
+            .AddSingleton<SourceAuditingOperator>()
             .AddSingleton<ISourceFileLoader, CachingSourceFileLoader>()
-            .AddConsoleLogging(options.LogLevel)
             .AddStartupServices()
             .BuildServiceProvider();
     }

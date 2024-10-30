@@ -1,7 +1,6 @@
 using System.Data;
 using Dapper;
 using Db4Wd.Engine;
-using Db4Wd.Extensions;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
@@ -37,8 +36,8 @@ public sealed class MigrationConnector(
             {
                 lease = Constants.SchemaUpdateLease,
                 lockId,
-                agent = agentContext.Agent,
-                host = agentContext.Host
+                agent = AgentContext.Agent,
+                host = AgentContext.Host
             },
             transaction,
             commandTimeout: 5);

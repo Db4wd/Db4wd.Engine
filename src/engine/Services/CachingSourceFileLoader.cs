@@ -7,10 +7,10 @@ namespace Db4Wd.Services;
 
 public sealed class CachingSourceFileLoader(ILogger<CachingSourceFileLoader> logger) : ISourceFileLoader
 {
-    private IReadOnlyCollection<SourceFileHeader>? _cachedResult;
+    private SourceFileHeader[]? _cachedResult;
     
     /// <inheritdoc />
-    public async Task<IReadOnlyCollection<SourceFileHeader>> GetSourceFilesAsync(
+    public async Task<SourceFileHeader[]> GetSourceFilesAsync(
         IMigrationSourceReader sourceReader,
         DirectoryInfo basePath,
         string matchPattern,
@@ -20,14 +20,14 @@ public sealed class CachingSourceFileLoader(ILogger<CachingSourceFileLoader> log
         {
             logger.LogDebug("Using cached {item} collection from previous call (count={count})", 
                 nameof(SourceFileHeader),
-                _cachedResult.Count);
+                _cachedResult.Length);
             return _cachedResult;
         }
 
         return _cachedResult = await LoadSourceFilesAsync(sourceReader, basePath, matchPattern, cancellationToken);
     }
 
-    private async Task<IReadOnlyCollection<SourceFileHeader>> LoadSourceFilesAsync(
+    private async Task<SourceFileHeader[]> LoadSourceFilesAsync(
         IMigrationSourceReader sourceReader, 
         DirectoryInfo basePath, 
         string matchPattern, 
@@ -53,14 +53,7 @@ public sealed class CachingSourceFileLoader(ILogger<CachingSourceFileLoader> log
         CancellationToken cancellationToken)
     {
         using var textReader = new StreamReader(File.OpenRead(path));
-        var header = await sourceReader.ReadHeaderAsync(textReader, path, cancellationToken);
-
-        return header switch
-        {
-            { MigrationId: null } => throw new MigrationSourceException("Source file missing migration id directive", path),
-            { DbVersion: null } => throw new MigrationSourceException("Source file missing database version directive", path),
-            _ => LogValid(header)
-        };
+        return await sourceReader.ReadHeaderAsync(textReader, path, cancellationToken);
     }
 
     private SourceFileHeader LogValid(SourceFileHeader header)

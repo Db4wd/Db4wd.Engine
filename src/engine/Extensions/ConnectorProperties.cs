@@ -13,7 +13,7 @@ public sealed class ConnectorProperties(
         .Where(version => version > InstalledVersion)
         .OrderDescending();
 
-    public Version NewestVersion => availableVersions.LastOrDefault()
+    public Version NewestVersion => availableVersions.Max()
                                     ?? throw new InvalidOperationException(
                                         "No connector versions have been registered");
 
@@ -24,6 +24,11 @@ public sealed class ConnectorProperties(
         { Build: > 0 } => true,
         _ => false
     };
+
+    /// <summary>
+    /// Gets whether the connector can be updated.
+    /// </summary>
+    public bool IsUpdateable => InstalledVersion < NewestVersion;
 
     public IDatabaseConnector GetInstance() => connector ?? throw new InvalidOperationException(
         "Connector not initialized");

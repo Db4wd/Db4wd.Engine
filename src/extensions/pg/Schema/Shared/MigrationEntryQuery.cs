@@ -6,7 +6,7 @@ namespace Db4Wd.Postgres.Schema.Shared;
 
 public static class MigrationEntryQuery
 {
-    public static async Task<IReadOnlyCollection<MigrationEntry>> QueryAsync(
+    public static async Task<MigrationEntry[]> QueryAsync(
         NpgConnectionFactory connectionFactory,
         AgentContext context,
         CancellationToken cancellationToken)
