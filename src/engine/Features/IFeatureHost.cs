@@ -1,4 +1,4 @@
-namespace DbForward;
+namespace DbForward.Features;
 
 /// <summary>
 /// Defines a feature host.

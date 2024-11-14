@@ -7,12 +7,14 @@ namespace DbForward.Postgres;
 
 public interface IMigrationScopeFactory
 {
-    Task<IMigrationScope> CreateAsync(SourceOperation operation,
+    Task<IMigrationScope> CreateAsync(
+        SourceOperation operation,
         OperationTracker operationTracker,
         CancellationToken cancellationToken);
 }
 
-internal sealed class MigrationScopeFactory(IConnectionFactory connectionFactory, ILoggerFactory loggerFactory)
+internal sealed class MigrationScopeFactory(IConnectionFactory connectionFactory,
+    ILoggerFactory loggerFactory)
     : IMigrationScopeFactory
 {
     /// <inheritdoc />
@@ -26,6 +28,7 @@ internal sealed class MigrationScopeFactory(IConnectionFactory connectionFactory
         return new PostgresMigrationScope(
             connection,
             transaction,
+            operationTracker,
             loggerFactory.CreateLogger<PostgresMigrationScope>());
     }
 }

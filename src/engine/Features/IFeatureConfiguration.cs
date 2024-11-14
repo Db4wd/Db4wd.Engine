@@ -1,7 +1,6 @@
-using DbForward.Features;
 using Vertical.Cli.Configuration;
 
-namespace DbForward;
+namespace DbForward.Features;
 
 public interface IFeatureConfiguration<TParentOptions> where TParentOptions : GlobalOptions
 {

@@ -1,0 +1,25 @@
+﻿{
+  "collectedScope": {
+    "directives": [
+      {
+        "type": "TerminatedStatementDirective",
+        "text": "create table core.account(\n    id uuid not null,\n    emailaddress text not null,\n    login text not null,\n    passhash text not null,\n    primary key(id)\n);\n"
+      }
+    ],
+    "details": [],
+    "discardCalled": false
+  },
+  "result": {
+    "Response": "Rollback",
+    "AppliedSources": [],
+    "FailedSource": {
+      "Context": "{CurrentDirectory}Assets/migration_02.sql",
+      "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
+      "DbVersion": "2024-11-14T16:11:08",
+      "Metadata": {
+        "author": "testy",
+        "task": "CE_10029"
+      }
+    }
+  }
+}

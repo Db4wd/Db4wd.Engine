@@ -2,6 +2,7 @@ using DbForward.Constants;
 using DbForward.Extensions;
 using DbForward.Models;
 using DbForward.Services;
+using DbForward.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace DbForward.Features.Operations.Apply;
@@ -29,9 +30,12 @@ public sealed class Feature(
 
     /// <inheritdoc />
     protected override IEnumerable<SourceHeader> GetSourceTargets(
+        Options options,
         IList<SourceHeader> sources,
         HashSet<Guid> appliedEntryIds,
         IDbVersionComparer versionComparer) => sources
         .Where(source => !appliedEntryIds.Contains(source.MigrationId))
-        .OrderBy(source => source.DbVersion, versionComparer);
+        .OrderBy(source => source.DbVersion, versionComparer)
+        .TakeUntilInclusive(source => source.MigrationId == options.TargetId ||
+                                      source.DbVersion == options.TargetDbVersion);
 }

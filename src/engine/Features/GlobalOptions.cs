@@ -1,8 +1,6 @@
 using Microsoft.Extensions.Logging;
-using Vertical.Cli;
-using Vertical.Cli.Configuration;
 
-namespace DbForward;
+namespace DbForward.Features;
 
 /// <summary>
 /// Base class for options

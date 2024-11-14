@@ -57,10 +57,6 @@ create table __schema__.metrics(
         on delete cascade
 );
 -- [go]
-create sequence __schema__.id_sequence
-    as int
-    start with 1;
--- [go]
 create view __schema__.migrations_view as
 select src.*
 from pgfwd_meta.migrations src

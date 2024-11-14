@@ -1,4 +1,4 @@
-using DbForward.Models;
+using DbForward.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace DbForward.Services.Auditing;
@@ -8,24 +8,26 @@ public sealed class UniqueDbVersionAuditStep(ILogger<UniqueDbVersionAuditStep> l
     /// <inheritdoc />
     public Task<int> AuditAsync(AuditingContext context, CancellationToken cancellationToken)
     {
-        var lookup = new Dictionary<string, SourceHeader>();
-        var errors = 0;
-        
-        foreach (var source in context.Sources)
-        {
-            if (lookup.TryAdd(source.DbVersion, source))
-                continue;
+        var groups = context
+            .Sources
+            .GroupBy(source => source.DbVersion)
+            .Where(group => group.Count() > 1)
+            .ToArray();
 
-            errors++;
-            
-            logger.LogError(
-                "Source {current} conflicts with {previous} with respect to dbVersion {version}",
-                source.Context,
-                lookup[source.DbVersion].Context,
-                source.DbVersion);
+        if (groups.Length == 0)
+        {
+            return Task.FromResult(0);
         }
 
-        return Task.FromResult(errors);
+        foreach (var group in groups)
+        {
+            var list = string.Join(Environment.NewLine, group.Select(s => $"  -> {s.Context.TruncateEnd(75)}"));
+            logger.LogError("Db version tag {version} found in multiple sources:\n{list}",
+                group.Key,
+                list);
+        }
+
+        return Task.FromResult(groups.Length);
     }
 
     /// <inheritdoc />

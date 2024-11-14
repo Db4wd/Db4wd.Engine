@@ -10,15 +10,14 @@ namespace DbForward.Postgres;
 
 public sealed class PostgresDatabaseExtensions(
     IConnectionFactory connectionFactory,
-    ISchemaInitializer schemaInitializer,
+    ISchemaManager schemaManager,
     IMigrationScopeFactory scopeFactory,
     IFileSystem fileSystem,
     IAgentContext agentContext,
     IMetadataContext metadataContext)
     : IDatabaseExtension
 {
-    private readonly ISourceReader sourceReader = new PostgresSourceReader();
-    private readonly IDbVersionComparer versionComparer = new PostgresDbVersionComparer();
+    private readonly IDbVersionComparer versionComparer = ConventionalDbVersionComparer.Instance;
     
     /// <inheritdoc />
     public string ToolName => Constants.ToolName;
@@ -32,7 +31,7 @@ public sealed class PostgresDatabaseExtensions(
     /// <inheritdoc />
     public async Task<bool> IsSchemaInitializedAsync(CancellationToken cancellationToken)
     {
-        return await schemaInitializer.IsSchemaInitializedAsync(cancellationToken);
+        return await schemaManager.IsSchemaInitializedAsync(cancellationToken);
     }
 
     /// <inheritdoc />
@@ -40,14 +39,14 @@ public sealed class PostgresDatabaseExtensions(
     {
         await using var connection = await connectionFactory.CreateAsync(cancellationToken);
 
-        if (await schemaInitializer.InitializeAsync(this, cancellationToken))
+        if (await schemaManager.InitializeAsync(this, cancellationToken))
             return SchemaInitialization.Initialized;
 
         throw new InvalidOperationException("Failed to initialize internal metadata schema.");
     }
 
     /// <inheritdoc />
-    public ISourceReader GetSourceReader() => sourceReader;
+    public ISourceReader GetSourceReader() => ConventionalSourceReader.Instance;
 
     /// <inheritdoc />
     public async Task<IMigrationScope> CreateMigrationScopeAsync(SourceOperation operation,
@@ -68,11 +67,11 @@ public sealed class PostgresDatabaseExtensions(
             "Templates",
             "template.sql"));
         
-        var sequenceId = await NextSequenceId.QueryAsync(connection);
+        var nextVersionId = await NextVersionId.QueryAsync(connection);
         var tokens = new Dictionary<string, string>
         {
             ["$(migrationId)"] = Guid.NewGuid().ToString(),
-            ["$(dbVersion)"] = DbVersion.Create(sequenceId),
+            ["$(dbVersion)"] = ConventionalDbVersionComparer.CreateDbVersion(nextVersionId),
             ["$(author)"] = agentContext.Agent
         };
 
@@ -127,5 +126,11 @@ public sealed class PostgresDatabaseExtensions(
     public Task<IMetadataContext> CreateMetadataContextAsync(CancellationToken cancellationToken)
     {
         return Task.FromResult(metadataContext);
+    }
+
+    /// <inheritdoc />
+    public async Task PostCheckStateAsync(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
     }
 }

@@ -39,6 +39,13 @@ internal sealed class PostgresMetadataContext(
     }
 
     /// <inheritdoc />
+    public async Task<string?> GetCurrentVersionAsync(CancellationToken cancellationToken)
+    {
+        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
+        return await Queries.GetCurrentVersion.QueryAsync(connection);
+    }
+
+    /// <inheritdoc />
     public async Task<CompressedBlobInfo?> GetBlobAsync(Guid migrationId, CancellationToken cancellationToken)
     {
         await using var connection = await connectionFactory.CreateAsync(cancellationToken);

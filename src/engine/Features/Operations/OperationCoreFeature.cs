@@ -46,7 +46,7 @@ public abstract class OperationCoreFeature<TOptions>(
         // Build target sources (those which will be applied)
         var versionComparer = extension.GetDbVersionComparer();
         var appliedIdentifiers = new HashSet<Guid>(appliedEntries.Select(entry => entry.MigrationId));
-        var sourceTargets = GetSourceTargets(sources, appliedIdentifiers, versionComparer).ToArray();
+        var sourceTargets = GetSourceTargets(options, sources, appliedIdentifiers, versionComparer).ToArray();
         
         logger.LogDebug("Identified {count} pending source(s)", sourceTargets.Length);
 
@@ -73,8 +73,9 @@ public abstract class OperationCoreFeature<TOptions>(
         }
         
         logger.LogInformation("Sources validated");
-        
-        var currentVersion = (await metadataContext.GetCurrentDetailAsync(cancellationToken))?.DbVersion;
+
+        var currentVersion = await metadataContext.GetCurrentVersionAsync(cancellationToken);
+        logger.LogDebug("Current version returned {version}", currentVersion);
         
         var migrationParameters = new MigrationParameters(
             operation,
@@ -89,7 +90,8 @@ public abstract class OperationCoreFeature<TOptions>(
             options.StatementLogLevel);
         
         var result = await migrationOperator.ApplyAsync(migrationParameters, cancellationToken);
-        var (preVersion, newVersion) = (currentVersion ?? "pristine", result.CurrentVersion ?? "pristine");
+        var updatedVersion = await metadataContext.GetCurrentVersionAsync(cancellationToken);
+        var (preVersion, newVersion) = (currentVersion ?? "pristine", updatedVersion ?? "pristine");
         
         switch (result)
         {
@@ -142,7 +144,9 @@ public abstract class OperationCoreFeature<TOptions>(
 
     protected abstract Dictionary<string, string> GetOptionalMetadata(TOptions options);
     
-    protected abstract IEnumerable<SourceHeader> GetSourceTargets(IList<SourceHeader> sources, 
+    protected abstract IEnumerable<SourceHeader> GetSourceTargets(
+        TOptions options,
+        IList<SourceHeader> sources, 
         HashSet<Guid> appliedEntryIds,
         IDbVersionComparer versionComparer);
 }

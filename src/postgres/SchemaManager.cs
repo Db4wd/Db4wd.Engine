@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DbForward.Postgres;
 
-public interface ISchemaInitializer
+public interface ISchemaManager
 {
     /// <summary>
     /// Performs a migration on the internal metadata schema.
@@ -19,15 +19,27 @@ public interface ISchemaInitializer
     /// <returns><c>bool</c></returns>
     Task<bool> InitializeAsync(IDatabaseExtension parent, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Gets whether the schema is initialized.
+    /// </summary>
+    /// <param name="cancellationToken">Token observed for cancellation</param>
+    /// <returns>Task that returns <c>bool</c></returns>
     Task<bool> IsSchemaInitializedAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Performs post operation checks.
+    /// </summary>
+    /// <param name="cancellationToken">Token observed for cancellation</param>
+    /// <returns></returns>
+    Task PostCheckOperationAsync(CancellationToken cancellationToken);
 }
 
-internal sealed class SchemaInitializer(
+internal sealed class SchemaManager(
     IConnectionFactory connectionFactory,
     IFileSystem fileSystem,
     IAgentContext agentContext,
     IMigrationOperator migrationOperator
-    ) : ISchemaInitializer
+    ) : ISchemaManager
 {
     /// <inheritdoc />
     public async Task<bool> InitializeAsync(IDatabaseExtension parent, CancellationToken cancellationToken)
@@ -40,7 +52,7 @@ internal sealed class SchemaInitializer(
         var parameters = new MigrationParameters(SourceOperation.Migrate,
             agentContext,
             fileSystem,
-            new PostgresSourceReader(),
+            ConventionalSourceReader.Instance,
             async (operation, tracker, token) => await parent.CreateMigrationScopeAsync(operation, tracker, token),
             null,
             [new SourceHeader(postgresPath,
@@ -77,5 +89,11 @@ internal sealed class SchemaInitializer(
             new {schema = Constants.SchemaName});
 
         return count == 6;
+    }
+
+    /// <inheritdoc />
+    public async Task PostCheckOperationAsync(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
     }
 }

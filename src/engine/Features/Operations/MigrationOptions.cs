@@ -44,6 +44,7 @@ internal static class MigrationOptionsExtensions
                 description:
                 "Log level at which directive statements are logged (debug, info, error). Failed directives " +
                 "are always logged",
+                defaultProvider: () => LogLevel.Debug,
                 operandSyntax: "LEVEL")
             .AddOption(x => x.Tokens,
                 ["--token"],

@@ -1,0 +1,43 @@
+﻿db = {
+  "Migrations": [],
+  "Rollbacks": [
+    {
+      "date": "2025-01-01T02:00:00",
+      "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c02",
+      "data": {
+        "Operation": "Rollback",
+        "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
+        "DbVersion": "2024-11-14T16:11:08",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_02.sql",
+        "trackingData": {}
+      }
+    },
+    {
+      "date": "2025-01-01T03:00:00",
+      "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c03",
+      "data": {
+        "Operation": "Rollback",
+        "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
+        "DbVersion": "2024-11-14T16:11:07",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_01.sql",
+        "trackingData": {}
+      }
+    }
+  ],
+  "changesDiscarded": false
+}
+Logs:
+Information 0 Using default search pattern **/*.sql
+Information 0 Sources validated
+Information 0 Applying ...UnitTests/bin/Debug/net8.0/Assets/migration_02.sql (1 of 2, operation=Rollback)...
+Information 0 Source applied successfully (50ms)
+Information 0 Applying ...UnitTests/bin/Debug/net8.0/Assets/migration_01.sql (2 of 2, operation=Rollback)...
+Information 0 Source applied successfully (50ms)
+Information 0 Operation completed in (100ms)
+Information 0 Ok Rollback successful, target updated from 2024-11-14T16:11:08 -> pristine

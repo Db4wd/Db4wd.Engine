@@ -1,15 +1,16 @@
 using System.Text.RegularExpressions;
 using DbForward.Constants;
-using DbForward.Services;
 
-namespace DbForward.Postgres;
+namespace DbForward.Services;
 
-internal sealed partial class PostgresSourceReader : SequentialSourceReader
+public partial class ConventionalSourceReader : SequentialSourceReader
 {
+    public static ISourceReader Instance { get; } = new ConventionalSourceReader();
+    
     [GeneratedRegex(@"^-- \[metadata.(?<key>[^:]+): (?<value>.+)\]")]
     private static partial Regex KeyValuePairRegex();
 
-    [GeneratedRegex(@"^-- \[dbVersion: (?<value>[\d]{4}-[\d]{2}-[\d]{2}.[\d]{5})\]")]
+    [GeneratedRegex(@"^-- \[dbVersion: (?<value>[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2})\]")]
     private static partial Regex DbVersionRegex();
 
     [GeneratedRegex(@"^-- \[id: (?<id>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\]")]

@@ -1,4 +1,4 @@
-using DbForward.Models;
+using DbForward.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace DbForward.Services.Auditing;
@@ -8,24 +8,26 @@ public sealed class UniqueIdAuditStep(ILogger<UniqueIdAuditStep> logger) : ISour
     /// <inheritdoc />
     public Task<int> AuditAsync(AuditingContext context, CancellationToken cancellationToken)
     {
-        var lookup = new Dictionary<Guid, SourceHeader>();
-        var errors = 0;
-        
-        foreach (var source in context.Sources)
-        {
-            if (lookup.TryAdd(source.MigrationId, source))
-                continue;
+        var groups = context
+            .Sources
+            .GroupBy(source => source.MigrationId)
+            .Where(group => group.Count() > 1)
+            .ToArray();
 
-            errors++;
-            
-            logger.LogError(
-                "Source {current} conflicts with {previous} with respect to migration {id}",
-                source.Context,
-                lookup[source.MigrationId].Context,
-                source.MigrationId);
+        if (groups.Length == 0)
+        {
+            return Task.FromResult(0);
         }
 
-        return Task.FromResult(errors);
+        foreach (var group in groups)
+        {
+            var list = string.Join(Environment.NewLine, group.Select(s => $"  -> {s.Context.TruncateEnd(75)}"));
+            logger.LogError("Migration id {id} found in multiple sources:\n{list}",
+                group.Key,
+                list);
+        }
+
+        return Task.FromResult(groups.Length);
     }
 
     /// <inheritdoc />

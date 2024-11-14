@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbForward.Engine", "src\eng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbForward.Postgres", "src\postgres\DbForward.Postgres.csproj", "{C5EC81FF-9B9E-444D-B0A4-2E731194D3A6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{46A424A3-478D-43C3-B5D8-4C2AA2C65D85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "test\UnitTests\UnitTests.csproj", "{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,14 @@ Global
 		{C5EC81FF-9B9E-444D-B0A4-2E731194D3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5EC81FF-9B9E-444D-B0A4-2E731194D3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5EC81FF-9B9E-444D-B0A4-2E731194D3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F948711D-97A2-40DA-B6D3-3AB762A97B01} = {B60D6593-81E1-4389-93EE-73687216B708}
 		{C5EC81FF-9B9E-444D-B0A4-2E731194D3A6} = {B60D6593-81E1-4389-93EE-73687216B708}
+		{DF4C11EE-CCCE-4C8F-A5F6-88175EE0FCF5} = {46A424A3-478D-43C3-B5D8-4C2AA2C65D85}
 	EndGlobalSection
 EndGlobal

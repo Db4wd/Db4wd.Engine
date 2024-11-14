@@ -1,0 +1,58 @@
+﻿db = {
+  "Migrations": [
+    {
+      "date": "2025-01-01T00:00:00",
+      "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c00",
+      "data": {
+        "Operation": "Migrate",
+        "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
+        "DbVersion": "2024-11-14T16:11:07",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_01.sql",
+        "Metadata": {
+          "author": "testy"
+        },
+        "trackingData": {
+          "Metrics": {
+            "operator/elapsedMs": 100,
+            "operator/directiveCount": 2
+          },
+          "Tags": {}
+        },
+        "blob": {
+          "Path": "{CurrentDirectory}Assets/migration_01.sql",
+          "Compression": "gzip",
+          "Encoding": "Unicode (UTF-8)",
+          "SourceLength": 724,
+          "data": "1F8B08000000000000137452416EDB3010BCFB1573AC81488D64CB89D553DAB88581220562B52860E840892B89A824AA2465D7BF2F29C6761020B7C572766667964180AC111A95680947A651534F8A19E2284E18EAA092EAC8149F05019EA4219DBA0A88E67894E8A581A24E1E08A62174A2B6A342F6101C86D510FDD46F8871682ADDD30D586B1A39D60D8441C97A1484B2617D6D258D04EB4FF8F673FBE865E2B73252B97952132F2F7E91D24EEF1D31CB004FB4B8101D95306417A46EB07E7AF36A6B6DACF1CEF6343E505887F8F2BC79C836C81E3E7FDF60FB154F3F326C7E6F77D92E0CC3B9675ECEF12CDBB660E59FD704DA7A6CB933E704AD9033A7E86017F6615155D925356475DD403B136790549C94D748E6D85DA95F42D334B0CBA51CE3BE9639B850CEFB816E508CE625BABFA3ED4EF1163473947B97523E5582A7E009A775BCBE0B8A9847C1725DAE02B65A2C83E89EEEA3681127094F3CFA12798AF836B68828889659B44AA328BDBDF3988E0CE3CCB0908DF6D22A85FD36E6949F8FB1FFE8C5A77A1CF259A9C8DA802E1BEA184AA9E893C7B947AF2A8F7D3EE34A0E6794A840FF8476695CF11E36FB0F0000FFFF"
+        }
+      }
+    }
+  ],
+  "Rollbacks": [
+    {
+      "date": "2025-01-01T02:00:00",
+      "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c02",
+      "data": {
+        "Operation": "Rollback",
+        "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
+        "DbVersion": "2024-11-14T16:11:08",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_02.sql",
+        "trackingData": {}
+      }
+    }
+  ],
+  "changesDiscarded": false
+}
+Logs:
+Information 0 Using default search pattern **/*.sql
+Information 0 Sources validated
+Information 0 Applying ...UnitTests/bin/Debug/net8.0/Assets/migration_02.sql (1 of 1, operation=Rollback)...
+Information 0 Source applied successfully (50ms)
+Information 0 Operation completed in (50ms)
+Information 0 Ok Rollback successful, target updated from 2024-11-14T16:11:08 -> 2024-11-14T16:11:07

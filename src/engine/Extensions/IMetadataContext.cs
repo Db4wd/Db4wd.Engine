@@ -36,6 +36,13 @@ public interface IMetadataContext : IAsyncDisposable
     Task<MigrationDetail?> GetCurrentDetailAsync(CancellationToken cancellationToken);
 
     /// <summary>
+    /// Gets the current version.
+    /// </summary>
+    /// <param name="cancellationToken">Token observed for cancalltion</param>
+    /// <returns>Version string or <c>null</c></returns>
+    Task<string?> GetCurrentVersionAsync(CancellationToken cancellationToken);
+
+    /// <summary>
     /// Gets the blob applied for a migration.
     /// </summary>
     /// <param name="migrationId">Migration id</param>

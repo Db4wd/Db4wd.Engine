@@ -14,11 +14,9 @@ public interface IMigrationScope : IAsyncDisposable
     /// Applies a directive.
     /// </summary>
     /// <param name="directive">Directive to apply</param>
-    /// <param name="operationTracker">Object that tracks operation info</param>
     /// <param name="cancellationToken">Token observed for cancellation</param>
     /// <returns>Task that returns <see cref="OperationResponse"/></returns>
     Task<OperationResponse> ApplyDirectiveAsync(StatementSectionDirective directive,
-        OperationTracker operationTracker,
         CancellationToken cancellationToken);
 
     /// <summary>

@@ -11,6 +11,7 @@ namespace DbForward.Postgres;
 internal sealed class PostgresMigrationScope(
     NpgsqlConnection connection,
     NpgsqlTransaction transaction,
+    OperationTracker operationTracker,
     ILogger logger) : IMigrationScope
 {
     /// <inheritdoc />
@@ -22,7 +23,6 @@ internal sealed class PostgresMigrationScope(
 
     /// <inheritdoc />
     public async Task<OperationResponse> ApplyDirectiveAsync(StatementSectionDirective directive, 
-        OperationTracker operationTracker,
         CancellationToken cancellationToken)
     {
         try

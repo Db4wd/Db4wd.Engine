@@ -6,7 +6,6 @@ namespace DbForward.Services;
 public record MigrationResult(
     OperationResponse Response,
     SourceHeader[] AppliedSources,
-    string? CurrentVersion,
     SourceHeader? FailedSource = null)
 {
     /// <inheritdoc />

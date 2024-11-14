@@ -11,6 +11,9 @@ public sealed class TargetVersionOrderAuditStep(ILogger<TargetVersionOrderAuditS
         if (context.Operation == SourceOperation.Rollback)
             return Task.FromResult(0);
 
+        if (context.SourceTargets.Count == 0)
+            return Task.FromResult(0);
+
         var comparer = context.VersionComparer;
         var highestAppliedVersion = context
             .AppliedEntries

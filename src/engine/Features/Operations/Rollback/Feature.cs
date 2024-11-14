@@ -2,6 +2,7 @@ using DbForward.Constants;
 using DbForward.Extensions;
 using DbForward.Models;
 using DbForward.Services;
+using DbForward.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace DbForward.Features.Operations.Rollback;
@@ -28,9 +29,13 @@ public sealed class Feature(
         new();
 
     /// <inheritdoc />
-    protected override IEnumerable<SourceHeader> GetSourceTargets(IList<SourceHeader> sources,
+    protected override IEnumerable<SourceHeader> GetSourceTargets(
+        Options options,
+        IList<SourceHeader> sources,
         HashSet<Guid> appliedEntryIds,
         IDbVersionComparer versionComparer) => sources
         .Where(source => appliedEntryIds.Contains(source.MigrationId))
-        .OrderByDescending(source => source.DbVersion, versionComparer);
+        .OrderByDescending(source => source.DbVersion, versionComparer)
+        .TakeUntilInclusive(source => source.MigrationId == options.TargetId 
+                                      || source.DbVersion == options.TargetDbVersion);
 }

@@ -61,6 +61,17 @@ public sealed class EngineHostBuilder(string name, string description)
     }
 
     /// <summary>
+    /// Registers an extension.
+    /// </summary>
+    /// <param name="factory">Function that creates the extension instance.</param>
+    /// <returns>A reference to this instance</returns>
+    public EngineHostBuilder AddExtension(Func<IServiceProvider, IDatabaseExtension> factory)
+    {
+        services.AddSingleton(factory);
+        return this;
+    }
+
+    /// <summary>
     /// Builds the engine instance.
     /// </summary>
     /// <returns><see cref="IEngineHost"/></returns>

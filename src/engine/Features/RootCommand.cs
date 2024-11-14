@@ -34,7 +34,7 @@ internal static class RootCommand
 
         command
             .AddOption(x => x.LogLevel,
-                ["--log-level"],
+                ["-v", "--log-level"],
                 scope: CliScope.Descendants,
                 description: "Verbosity of log output (debug or info)",
                 defaultProvider: () => LogLevel.Information,

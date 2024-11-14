@@ -3,6 +3,7 @@ using DbForward.Features;
 using DbForward.Logging;
 using DbForward.Services;
 using DbForward.Services.Auditing;
+using DbForward.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,8 @@ internal static class ServiceRegistration
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime())
             .AddSingleton<ISourceAuditor, SourceAuditor>()
-            .AddSingleton<ISourceFileManager, SourceFileManager>();
+            .AddSingleton<ISourceFileManager, SourceFileManager>()
+            .AddSingleton(new TimerProvider(() => new StopwatchTimer()));
     }
     
     public static IServiceCollection AddExtensionServices(this IServiceCollection serviceCollection,

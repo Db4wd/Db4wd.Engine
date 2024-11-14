@@ -13,7 +13,7 @@ builder
     .ConfigureServices(services => services
         .AddSingleton<IConnectionFactory, DefaultConnectionFactory>()
         .AddSingleton<IMigrationScopeFactory, MigrationScopeFactory>()
-        .AddSingleton<ISchemaInitializer, SchemaInitializer>()
+        .AddSingleton<ISchemaManager, SchemaManager>()
         .AddSingleton<IMetadataContext, PostgresMetadataContext>()
     )
     .AddExtension<PostgresDatabaseExtensions>()
@@ -38,7 +38,7 @@ var engine = builder.Build();
 //            metadata delete
 
 var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-var common = $"--log-level:debug --env:{profile}/pg-local.json";
+var common = $"--log-level:debug --env:{profile}/postgres-local.env";
 var init = $"init {common}";
 var newTemplate = $"new {profile}/migrations/migration_00001.sql --tag task=DEV_10056 {common}";
 var apply = $"apply --base-path {profile}/migrations --statement-log-level debug --tag:build=a0029eff10299 {common}";
@@ -47,8 +47,8 @@ var history = $"history b614878c-2513-4646-ae8d-841caddab30e {common}";
 var detail = $"detail b614878c-2513-4646-ae8d-841caddab30e {common}";
 var status = $"status {common}";
 var audit = $"audit --base-path {profile}/migrations {common}";
-var source = $"source b614878c-2513-4646-ae8d-841caddab30e {common}";
-var sourceToFile = $"source b614878c-2513-4646-ae8d-841caddab30e --out {profile}/migration_00001.restored.sql {common}";
+var source = $"source 4347c991-072e-4b5f-a854-c374b010a23a {common}";
+var sourceToFile = $"source 4347c991-072e-4b5f-a854-c374b010a23a --out {profile}/migration_00001.restored.sql {common}";
 
 
-return await engine.ExecuteAsync(["pgfwd"]);    
+return await engine.ExecuteAsync(args);    

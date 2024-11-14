@@ -8,16 +8,36 @@ namespace DbForward.Services;
 
 public abstract class SequentialSourceReader : ISourceReader
 {
+    /// <summary>
+    /// Describes line content read from a source.
+    /// </summary>
     public abstract class LineContext
     {
+        /// <summary>
+        /// Gets the current line number (one based).
+        /// </summary>
         public abstract int LineNumber { get; }
         
+        /// <summary>
+        /// Gets the text read.
+        /// </summary>
         public abstract string LineText { get; }
         
+        /// <summary>
+        /// Gets the context that describes the source.
+        /// </summary>
         public abstract string Context { get; }
         
+        /// <summary>
+        /// Gets the current section.
+        /// </summary>
         public abstract SequentialSection? Section { get; }
 
+        /// <summary>
+        /// Creates an exception that includes a line number.
+        /// </summary>
+        /// <param name="message">Message to include</param>
+        /// <returns><see cref="LoggerCallbackException"/></returns>
         public LoggerCallbackException GetLineNumberException(string message)
         {
             return new LoggerCallbackException(log => log.LogError(
@@ -27,6 +47,11 @@ public abstract class SequentialSourceReader : ISourceReader
                 message));
         }
 
+        /// <summary>
+        /// Creates an exception that omits the line number.
+        /// </summary>
+        /// <param name="message">Message to include</param>
+        /// <returns><see cref="LoggerCallbackException"/></returns>
         public LoggerCallbackException GetSourceException(string message)
         {
             return new LoggerCallbackException(log => log.LogError(
@@ -34,6 +59,9 @@ public abstract class SequentialSourceReader : ISourceReader
                 Context,
                 message));
         }
+
+        /// <inheritdoc />
+        public override string ToString() => $"[{LineNumber}] {LineText}";
     }
     
     private sealed class PrivateLineContext(string context) : LineContext
@@ -61,7 +89,7 @@ public abstract class SequentialSourceReader : ISourceReader
             return true;
         }
 
-        public void SetSection(SequentialSection? value) => section = value;
+        internal void SetSection(SequentialSection? value) => section = value;
     }
     
     /// <inheritdoc />
@@ -235,23 +263,6 @@ public abstract class SequentialSourceReader : ISourceReader
 
             callback(lineContext);
         }
-    }
-
-    protected static LoggerCallbackException CreateLineNumberException(
-        string context,
-        int lineNumber,
-        string lineContent,
-        string message)
-    {
-        return new LoggerCallbackException(log => log.LogError(
-            """
-            Source {source}/line {lineNubber}: {message}\n
-                  {lineContent}      
-            """,
-            context,
-            lineNumber,
-            message,
-            new VerboseToken(lineContent)));
     }
 
     private static SourceHeader ComposeHeaderResult(string context, 

@@ -59,6 +59,7 @@ public abstract class AbstractFileSystem : IFileSystem
         outputStream.Position = 0;
         var content = Encoding.UTF8.GetString(outputStream.ToArray());
         await textWriter.WriteAsync(content.ToArray(), cancellationToken);
+        await textWriter.FlushAsync(cancellationToken);
     }
 
     protected abstract Stream GetStream(string path, FileMode fileMode);
