@@ -1,4 +1,5 @@
 using DbForward.Extensions;
+using DbForward.Logging;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 
@@ -32,19 +33,20 @@ public sealed class Feature(IDatabaseExtension extension, ILogger<Feature> logge
             
             var maxFileLength = results.Max(result => result.SourceFile.Length) + 2;
             var formatString = $"{{0,-{maxFileLength}}}{{1,-23}}{{2, -10}}{{3}}";
-
-            AnsiConsole.Foreground = Color.Green1;
-            AnsiConsole.WriteLine(formatString, "File", "Date applied", "Sha", "Id");
-            AnsiConsole.WriteLine(new string('-', maxFileLength + 69));
-            AnsiConsole.Foreground = Color.Grey58;
-
+            var header = string.Format(formatString, "File", "Date applied", "Sha", "Id");
+            var separator = new string('-', maxFileLength + 69);
+            logger.LogInformation("{header}", new OkToken(header));
+            logger.LogInformation("{header}", new OkToken(separator));
+            
+            
             foreach (var entry in results)
             {
-                AnsiConsole.WriteLine(formatString,
+                var detail = string.Format(formatString,
                     entry.SourceFile,
                     entry.DateApplied,
                     entry.Sha[^8..],
                     entry.MigrationId);
+                logger.LogInformation("{detail}", detail);
             }
 
             return 0;

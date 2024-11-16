@@ -17,16 +17,11 @@ public sealed class PostgresDatabaseExtensions(
     IMetadataContext metadataContext)
     : IDatabaseExtension
 {
-    private readonly IDbVersionComparer versionComparer = ConventionalDbVersionComparer.Instance;
-    
     /// <inheritdoc />
     public string ToolName => Constants.ToolName;
 
     /// <inheritdoc />
     public string DefaultFileExtension => ".sql";
-
-    /// <inheritdoc />
-    public IDbVersionComparer GetDbVersionComparer() => versionComparer;
 
     /// <inheritdoc />
     public async Task<bool> IsSchemaInitializedAsync(CancellationToken cancellationToken)
@@ -58,20 +53,19 @@ public sealed class PostgresDatabaseExtensions(
 
     /// <inheritdoc />
     public async Task WriteTemplateSource(TextWriter textWriter,
+        string dbVersionId,
         IReadOnlyDictionary<string, string> metadata,
         CancellationToken cancellationToken)
     {
-        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
         using var textReader = fileSystem.CreateReader(Path.Combine(
             Constants.RootAssetPath,
             "Templates",
             "template.sql"));
         
-        var nextVersionId = await NextVersionId.QueryAsync(connection);
         var tokens = new Dictionary<string, string>
         {
             ["$(migrationId)"] = Guid.NewGuid().ToString(),
-            ["$(dbVersion)"] = ConventionalDbVersionComparer.CreateDbVersion(nextVersionId),
+            ["$(dbVersion)"] = dbVersionId,
             ["$(author)"] = agentContext.Agent
         };
 
@@ -104,22 +98,13 @@ public sealed class PostgresDatabaseExtensions(
         if (properties.ContainsKey("connectionstring"))
             return;
         
-        TryAdd("host", "localhost");
-        TryAdd("port", "5432");
-        TryAdd("database", "public");
-        TryAdd("userid", "postgres");
-        TryAdd("password", "secret");
-        TryAdd("commandtimeout", "30");
-
-        return;
-
-        void TryAdd(string key, string value)
-        {
-            if (properties.ContainsKey(key))
-                return;
-            
-            properties.Add(key, value);
-        }
+        // Don't overwrite user specified properties
+        properties.TryAdd("host", "localhost");
+        properties.TryAdd("port", "5432");
+        properties.TryAdd("database", "public");
+        properties.TryAdd("userid", "postgres");
+        properties.TryAdd("password", "secret");
+        properties.TryAdd("commandtimeout", "30");
     }
 
     /// <inheritdoc />

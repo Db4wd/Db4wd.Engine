@@ -36,7 +36,7 @@ public class ApplyTests
     public async Task Apply_With_Target_Version_Sets_Expected_State()
     {
         var engine = fixture.GetInstance();
-        var args = $"apply --base-path:{fixture.AssetPath} --target-version:2024-11-14T16:11:07";
+        var args = $"apply --base-path:{fixture.AssetPath} --target-version:20241114-161107";
         var result = await engine.ExecuteAsync(args.Split(' '));
         var data = fixture.GetVerifiable();
 

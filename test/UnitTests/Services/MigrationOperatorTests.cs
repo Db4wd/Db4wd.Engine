@@ -24,7 +24,7 @@ public class MigrationOperatorTests
         {
             collectedScope = scope.GetVerifiableObject(),
             result
-        }, JsonOptions.Value);
+        }, JsonOptions.Default);
         
         await Verify(expected);
     }
@@ -40,7 +40,7 @@ public class MigrationOperatorTests
         {
             collectedScope = scope.GetVerifiableObject(),
             result
-        }, JsonOptions.Value);
+        }, JsonOptions.Default);
         
         await Verify(expected);
     }
@@ -56,7 +56,7 @@ public class MigrationOperatorTests
         {
             collectedScope = scope.GetVerifiableObject(),
             result
-        }, JsonOptions.Value);
+        }, JsonOptions.Default);
         
         await Verify(expected);
     }

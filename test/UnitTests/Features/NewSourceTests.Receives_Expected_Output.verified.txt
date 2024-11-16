@@ -1,0 +1,21 @@
+﻿[
+  {
+    "simple": "Ok wrote new template file {CurrentDirectory}{version}.sql",
+    "exception": "(none)"
+  }
+]
+Stream output:
+-- [head]
+-- [id: 317d8644-817d-4b19-8531-3e525b2f0001]
+-- [dbVersion: {version}]
+-- [metadata.author: tester]
+-- [metadata.framework: xunit]
+-- [/head]
+
+-- [up]
+-- [/up]
+
+-- [down]
+-- [/down]
+
+

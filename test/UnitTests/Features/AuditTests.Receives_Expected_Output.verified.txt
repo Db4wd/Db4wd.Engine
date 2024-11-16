@@ -1,0 +1,22 @@
+﻿[
+  {
+    "simple": "Matched 2 source(s)",
+    "exception": "(none)"
+  },
+  {
+    "simple": "Validated the following:",
+    "exception": "(none)"
+  },
+  {
+    "simple": "  -> {CurrentDirectory}Assets/migration_01.sql = applied",
+    "exception": "(none)"
+  },
+  {
+    "simple": "  -> {CurrentDirectory}Assets/migration_02.sql = applied",
+    "exception": "(none)"
+  },
+  {
+    "simple": "Ok All sources validated",
+    "exception": "(none)"
+  }
+]

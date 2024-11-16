@@ -5,16 +5,42 @@ namespace DbForward.Services;
 
 public partial class ConventionalSourceReader : SequentialSourceReader
 {
+    private sealed class VersionComparer : IDbVersionComparer
+    {
+        /// <inheritdoc />
+        public int Compare(string? x, string? y) => string.Compare(x, y, StringComparison.Ordinal);
+
+        /// <inheritdoc />
+        public bool IsValid(string version) => DbVersionShortRegex().IsMatch(version);
+    }
+
+    private static readonly IDbVersionComparer Comparer = new VersionComparer();
+    
+    /// <summary>
+    /// Defines an instance of this type.
+    /// </summary>
     public static ISourceReader Instance { get; } = new ConventionalSourceReader();
     
     [GeneratedRegex(@"^-- \[metadata.(?<key>[^:]+): (?<value>.+)\]")]
     private static partial Regex KeyValuePairRegex();
+    
+    [GeneratedRegex(@"[\d]{8}-[\d]{6}")]
+    private static partial Regex DbVersionShortRegex();
 
-    [GeneratedRegex(@"^-- \[dbVersion: (?<value>[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2})\]")]
+    [GeneratedRegex(@"^-- \[dbVersion: (?<value>[\d]{8}-[\d]{6})\]")]
     private static partial Regex DbVersionRegex();
 
     [GeneratedRegex(@"^-- \[id: (?<id>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\]")]
     private static partial Regex MigrationIdRegex();
+
+    /// <inheritdoc />
+    public override IDbVersionComparer GetVersionComparer() => Comparer;
+
+    /// <inheritdoc />
+    public override Task<string> CreateVersionId()
+    {
+        return Task.FromResult($"{DateTime.Now:yyyyMMdd-HHmmss}");
+    }
 
     /// <inheritdoc />
     protected override SectionTagSyntax? ReadSectionTagSyntax(LineContext context)

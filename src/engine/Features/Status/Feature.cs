@@ -22,7 +22,7 @@ public sealed class Feature(IDatabaseExtension extension,
         var detail = await metadataContext.GetCurrentDetailAsync(cancellationToken);
         var entries = await metadataContext.GetEntriesAsync(cancellationToken);
         var sourceReader = extension.GetSourceReader();
-        var versionComparer = extension.GetDbVersionComparer();
+        var versionComparer = sourceReader.GetVersionComparer();
         var sources = await sourceManager.GetSourceHeadersInPathAsync(
             options.BasePath,
             extension.ResolveSearchPattern(options.SearchPattern, logger),
@@ -48,7 +48,7 @@ public sealed class Feature(IDatabaseExtension extension,
 
                 logger.LogInformation("{ok} current migration =\n{@detail}",
                     new OkToken("Found"),
-                    detail);
+                    displayResult);
                 break;
         }
 

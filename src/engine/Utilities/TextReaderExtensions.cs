@@ -19,16 +19,4 @@ public static class TextReaderExtensions
 
         return buffer.ToString();
     }
-
-    public static async Task CopyAllTextAsync(this TextReader textReader,
-        TextWriter textWriter,
-        IReadOnlyDictionary<string, string> tokens,
-        CancellationToken cancellationToken = default)
-    {
-        while (await textReader.ReadLineAsync(cancellationToken) is { } str)
-        {
-            var line = tokens.Aggregate(str, (next, kv) => next.Replace(kv.Key, kv.Value));
-            await textWriter.WriteLineAsync(line);
-        }
-    }
 }

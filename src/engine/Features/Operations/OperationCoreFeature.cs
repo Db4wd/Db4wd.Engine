@@ -44,7 +44,7 @@ public abstract class OperationCoreFeature<TOptions>(
         logger.LogDebug("Matched {count} source(s)", sources.Count);
 
         // Build target sources (those which will be applied)
-        var versionComparer = extension.GetDbVersionComparer();
+        var versionComparer = sourceReader.GetVersionComparer();
         var appliedIdentifiers = new HashSet<Guid>(appliedEntries.Select(entry => entry.MigrationId));
         var sourceTargets = GetSourceTargets(options, sources, appliedIdentifiers, versionComparer).ToArray();
         

@@ -1,0 +1,14 @@
+﻿[
+  {
+    "simple": "Ok Wrote file local-db.env",
+    "exception": "(none)"
+  }
+]
+Stream output:
+{
+  "host": "localhost",
+  "database": "testdb",
+  "user": "root",
+  "password": "secret"
+}
+

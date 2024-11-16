@@ -112,6 +112,7 @@ internal sealed class MigrationOperator(TimerProvider timerProvider, ILogger<Mig
             source.Metadata.MergeReplace(parameters.Metadata));
 
         await scope.CommitChangesAsync(migrationDetail, cancellationToken);
+        logger.LogDebug("Committed changes");
         
         return OperationResponse.Successful;
     }

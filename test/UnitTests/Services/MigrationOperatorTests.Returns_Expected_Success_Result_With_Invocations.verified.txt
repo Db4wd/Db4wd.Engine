@@ -12,7 +12,7 @@
     ],
     "details": [
       {
-        "DbVersion": "2024-11-14T16:11:08",
+        "DbVersion": "20241114-161108",
         "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
         "Metadata": {
           "author": "testy",
@@ -23,13 +23,13 @@
         "Operation": "Migrate",
         "Compression": "gzip",
         "Encoding": "Unicode (UTF-8)",
-        "Sha": "ac39dc9b8e15801436426edd5cf17d7af6ac66ddbda0f53fadbb48ff08015611",
+        "Sha": "6a8f38d92ce16a7452e8159787b4ddb1d266d21bba8f59af955d6d31cbba9340",
         "Path": "{CurrentDirectory}Assets/migration_02.sql",
-        "SourceLength": 896,
+        "SourceLength": 892,
         "SourceFile": "migration_02.sql"
       },
       {
-        "DbVersion": "2024-11-14T16:11:07",
+        "DbVersion": "20241114-161107",
         "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
         "Metadata": {
           "author": "testy"
@@ -39,9 +39,9 @@
         "Operation": "Migrate",
         "Compression": "gzip",
         "Encoding": "Unicode (UTF-8)",
-        "Sha": "b35fabc896b012bd9ac65af26f5cdaf6ced8a66ec8ad089baa73daebcc1d6b73",
+        "Sha": "7282bc15ae0cd6ef59d954dca845d606e8cf4469d949ed2380ce566188d3ac73",
         "Path": "{CurrentDirectory}Assets/migration_01.sql",
-        "SourceLength": 724,
+        "SourceLength": 720,
         "SourceFile": "migration_01.sql"
       }
     ],
@@ -53,7 +53,7 @@
       {
         "Context": "{CurrentDirectory}Assets/migration_02.sql",
         "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
-        "DbVersion": "2024-11-14T16:11:08",
+        "DbVersion": "20241114-161108",
         "Metadata": {
           "author": "testy",
           "task": "CE_10029"
@@ -62,7 +62,7 @@
       {
         "Context": "{CurrentDirectory}Assets/migration_01.sql",
         "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
-        "DbVersion": "2024-11-14T16:11:07",
+        "DbVersion": "20241114-161107",
         "Metadata": {
           "author": "testy"
         }

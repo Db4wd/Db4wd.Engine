@@ -25,7 +25,7 @@ internal static class DatabaseExtensionExtensions
             return pattern;
 
         pattern = $"**/*{extension.DefaultFileExtension}";
-        logger.LogInformation("Using default search pattern {pattern}", pattern);
+        logger.LogDebug("Using default search pattern {pattern}", pattern);
         return pattern;
     }
 }

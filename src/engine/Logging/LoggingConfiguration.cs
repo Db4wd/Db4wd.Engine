@@ -39,7 +39,7 @@ internal static class LoggingConfiguration
                             destr.MaxProperties = 15;
                         }))
                     .ConfigureProfiles([LogLevel.Error, LogLevel.Critical], profile => profile
-                        .ConfigureOptions<ExceptionRenderer.Options>(ex => ex.MaxStackFrames = 50))
+                        .ConfigureOptions<ExceptionRenderer.Options>(ex => ex.MaxStackFrames = 5))
                 ));
     }
 }

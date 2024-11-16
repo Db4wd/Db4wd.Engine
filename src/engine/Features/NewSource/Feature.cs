@@ -5,7 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace DbForward.Features.NewSource;
 
-public sealed class Feature(IDatabaseExtension extension,
+public sealed class Feature(
+    IDatabaseExtension extension,
     IFileSystem fileSystem,
     ILogger<Feature> logger) : IFeature<Options>
 {
@@ -15,14 +16,19 @@ public sealed class Feature(IDatabaseExtension extension,
         if (!await extension.CheckMigrationsInitializedAsync(logger, cancellationToken))
             return -1;
         
-        await using var textWriter = fileSystem.CreateWriter(options.OutputPath.FullName);
+        var versionId = await extension.GetSourceReader().CreateVersionId();
+        var templateName = $"{versionId}{extension.DefaultFileExtension}";
+        var path = Path.Combine(options.BasePath.FullName, templateName);
+        
+        await using var textWriter = fileSystem.CreateWriter(path);
         await extension.WriteTemplateSource(textWriter, 
+            versionId,
             new Dictionary<string, string>(options.Metadata), 
             cancellationToken);
         
         logger.LogInformation("{ok} wrote new template file {path}",
             OkToken.Default,
-            options.OutputPath.FullName);
+            path);
 
         return 0;
     }

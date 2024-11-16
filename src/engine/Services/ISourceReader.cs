@@ -8,6 +8,22 @@ namespace DbForward.Services;
 public interface ISourceReader
 {
     /// <summary>
+    /// Gets the version comparer.
+    /// </summary>
+    /// <returns><see cref="IDbVersionComparer"/></returns>
+    IDbVersionComparer GetVersionComparer();
+    
+    /// <summary>
+    /// Creates a version id in a format that can be later parsed an ordered.
+    /// </summary>
+    /// <returns>Task that returns <c>string</c></returns>
+    /// <remarks>
+    /// This method should generate a version id that is guaranteed to be greater
+    /// than any previous generated id when ordered.
+    /// </remarks>
+    Task<string> CreateVersionId();
+    
+    /// <summary>
     /// Reads the header section.
     /// </summary>
     /// <param name="textReader">Text reader that contains the source content.</param>

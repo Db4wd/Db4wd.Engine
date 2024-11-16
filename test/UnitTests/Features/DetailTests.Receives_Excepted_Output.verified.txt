@@ -1,0 +1,28 @@
+﻿[
+  {
+    "complex": {
+      "found": {},
+      "@migration": {
+        "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
+        "DbVersion": "20241114-161107",
+        "DateApplied": "2025-01-01T00:00:00",
+        "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c00",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_01.sql",
+        "Sha": "7282bc15ae0cd6ef59d954dca845d606e8cf4469d949ed2380ce566188d3ac73",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "Metrics": {
+          "operator/elapsedMs": "50",
+          "operator/directiveCount": "1"
+        },
+        "OperationTags": {},
+        "Metadata": {
+          "author": "testy"
+        }
+      },
+      "{OriginalFormat}": "{found} migration = {@migration}"
+    },
+    "exception": "(none)"
+  }
+]

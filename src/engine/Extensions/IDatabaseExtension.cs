@@ -20,12 +20,6 @@ public interface IDatabaseExtension
     string DefaultFileExtension { get; }
 
     /// <summary>
-    /// Gets the an object used to comparer database version.
-    /// </summary>
-    /// <returns><see cref="IDbVersionComparer"/></returns>
-    IDbVersionComparer GetDbVersionComparer();
-
-    /// <summary>
     /// Gets whether the migration schema is initialized.
     /// </summary>
     /// <param name="cancellationToken">Token observed for cancellation</param>
@@ -60,10 +54,12 @@ public interface IDatabaseExtension
     /// Writes template content for a new migration source.
     /// </summary>
     /// <param name="textWriter">Text writer to write the template to</param>
+    /// <param name="dbVersionId">The version to include in the template</param>
     /// <param name="metadata">Metadata to include in the template</param>
     /// <param name="cancellationToken">Token observed for cancellation</param>
     /// <returns>Task</returns>
     Task WriteTemplateSource(TextWriter textWriter,
+        string dbVersionId,
         IReadOnlyDictionary<string, string> metadata,
         CancellationToken cancellationToken);
 

@@ -91,7 +91,13 @@ public abstract class SequentialSourceReader : ISourceReader
 
         internal void SetSection(SequentialSection? value) => section = value;
     }
-    
+
+    /// <inheritdoc />
+    public abstract IDbVersionComparer GetVersionComparer();
+
+    /// <inheritdoc />
+    public abstract Task<string> CreateVersionId();
+
     /// <inheritdoc />
     public async Task<SourceHeader> ReadHeaderAsync(TextReader textReader,
         string context,

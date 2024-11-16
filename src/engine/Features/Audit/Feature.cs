@@ -36,7 +36,7 @@ public sealed class Feature(IDatabaseExtension extension,
         logger.LogInformation("Matched {count} source(s)", sources.Count);
 
         // Build target sources (those which will be applied)
-        var versionComparer = extension.GetDbVersionComparer();
+        var versionComparer = sourceReader.GetVersionComparer();
         var appliedIdentifiers = new HashSet<Guid>(appliedEntries.Select(entry => entry.MigrationId));
         var sourceTargets = sources
             .Where(source => !appliedIdentifiers.Contains(source.MigrationId))
@@ -61,7 +61,7 @@ public sealed class Feature(IDatabaseExtension extension,
 
         logger.LogInformation("Validated the following:");
         
-        foreach (var source in sources)
+        foreach (var source in sources.OrderBy(source => source.Context))
         {
             var description = appliedIdentifiers.Contains(source.MigrationId)
                 ? "applied"

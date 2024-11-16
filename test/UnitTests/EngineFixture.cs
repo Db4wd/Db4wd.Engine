@@ -14,25 +14,27 @@ public sealed class EngineFixture
 {
     public UnitDatabase Database { get; } = new();
 
-    public UnitLogger.Provider LoggerProvider { get; } = new();
+    private readonly JsonCaptureLogger.Provider loggerProvider = new();
 
     public string AssetPath { get; } = Path.Combine(
         Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
         "Assets");
 
-    public void ClearLogger() => LoggerProvider.Logger.Clear();
+    public void ClearLogger() => loggerProvider.ClearLogger();
 
     public string GetVerifiable()
     {
         var builder = new StringBuilder();
-        builder.AppendLine($"db = {JsonSerializer.Serialize(Database.GetVerifiableObject(), JsonOptions.Value)}");
+        builder.AppendLine($"db = {JsonSerializer.Serialize(Database.GetVerifiableObject(), JsonOptions.Default)}");
         builder.AppendLine("Logs:");
-        builder.Append(LoggerProvider.Logger);
+        builder.Append(loggerProvider.GetVerifiable());
 
         return builder.ToString();
     }
 
-    public IEngineHost GetInstance()
+    public string GetVerifiableLogs() => loggerProvider.GetVerifiable();
+
+    public IEngineHost GetInstance(Action<IServiceCollection>? configure = null)
     {
         var builder = new EngineHostBuilder(
             "unit-test",
@@ -41,9 +43,6 @@ public sealed class EngineFixture
         builder.AddExtension(_ => new UnitExtension(Database));
 
         builder.ConfigureServices(services => services
-            .AddLogging(logging => logging
-                .ClearProviders()
-                .AddProvider(LoggerProvider))
             .AddSingleton(new TimerProvider(() => new StaticTimer()))
             .AddSingleton<IAgentContext>(_ =>
             {
@@ -53,9 +52,22 @@ public sealed class EngineFixture
                 mock.TimeZoneOffset.Returns(TimeSpan.Zero);
                 return mock;
             })
-            .AddSingleton<IFileSystem, ConcurrentFileSystem>());
+            .AddSingleton<IFileSystem, ConcurrentFileSystem>()
+            .AddLogging(logging => logging
+                .ClearProviders()
+                .AddProvider(loggerProvider)));
+
+        builder.ConfigureServices(services => configure?.Invoke(services));
 
         return builder.Build();
+    }
+
+    public async Task<IEngineHost> GetStagedInstanceAsync()
+    {
+        var instance = GetInstance();
+        await instance.ExecuteAsync($"apply --base-path:{AssetPath}");
+        ClearLogger();
+        return instance;
     }
 
     public async Task<int> ExecuteAsync(string args) =>

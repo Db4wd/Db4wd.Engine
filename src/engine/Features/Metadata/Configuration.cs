@@ -19,6 +19,8 @@ public sealed class Options : ConnectionOptions
     public DirectoryInfo BasePath { get; set; } = default!;
     
     public string? SearchPattern { get; set; }
+    
+    public bool Confirm { get; set; }
 }
 
 public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
@@ -59,7 +61,10 @@ public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
                 ["--search-pattern"],
                 description:
                 "File system glob pattern used to match files (defaults to recursive search using the default file extension",
-                operandSyntax: "PATTERN");
+                operandSyntax: "PATTERN")
+            .AddSwitch(x => x.Confirm,
+                ["--confirm"],
+                description: "Bypasses the confirmation prompt");
 
         builder.AddHandler(command);
     }

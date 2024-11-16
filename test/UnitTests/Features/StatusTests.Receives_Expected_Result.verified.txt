@@ -12,9 +12,7 @@
         "SourcePath": "{CurrentDirectory}Assets",
         "SourceFile": "migration_01.sql",
         "Metadata": {
-          "author": "testy",
-          "build": "r28819",
-          "version": "v2.4.51092-dev"
+          "author": "testy"
         },
         "trackingData": {
           "Metrics": {
@@ -45,9 +43,7 @@
         "SourceFile": "migration_02.sql",
         "Metadata": {
           "author": "testy",
-          "task": "CE_10029",
-          "build": "r28819",
-          "version": "v2.4.51092-dev"
+          "task": "CE_10029"
         },
         "trackingData": {
           "Metrics": {
@@ -72,31 +68,30 @@
 Logs:
 [
   {
-    "simple": "Sources validated",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Applying ...UnitTests/bin/Debug/net8.0/Assets/migration_01.sql (1 of 2, operation=Migrate)...",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Source applied successfully (50ms)",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Applying ...UnitTests/bin/Debug/net8.0/Assets/migration_02.sql (2 of 2, operation=Migrate)...",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Source applied successfully (50ms)",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Operation completed in (100ms)",
-    "exception": "(none)"
-  },
-  {
-    "simple": "Ok Migrate successful, target updated from pristine -> 20241114-161108",
+    "complex": {
+      "ok": {},
+      "@detail": {
+        "MigrationId": "50f1f228-9707-4e10-8add-520a1a910c99",
+        "DbVersion": "20241114-161108",
+        "DateApplied": "2025-01-01T01:00:00",
+        "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c01",
+        "SourcePath": "{CurrentDirectory}Assets",
+        "SourceFile": "migration_02.sql",
+        "Sha": "6a8f38d92ce16a7452e8159787b4ddb1d266d21bba8f59af955d6d31cbba9340",
+        "Agent": "xunit",
+        "Host": "test-host",
+        "Metrics": {
+          "operator/elapsedMs": "50",
+          "operator/directiveCount": "1"
+        },
+        "OperationTags": {},
+        "Metadata": {
+          "author": "testy",
+          "task": "CE_10029"
+        }
+      },
+      "{OriginalFormat}": "{ok} current migration =\n{@detail}"
+    },
     "exception": "(none)"
   }
 ]

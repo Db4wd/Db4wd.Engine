@@ -14,7 +14,7 @@ public class SequentialSourceReaderTests
             """
             -- [head]
             -- [id: 5e366d33-5209-4fc5-bac6-1529bc5e95d4]
-            -- [dbVersion: 2024-11-13T12:00:00]
+            -- [dbVersion: 20241113-120000]
             -- [metadata.author: testy]
             -- [/head]
             """
@@ -24,7 +24,7 @@ public class SequentialSourceReaderTests
             CancellationToken.None);
         
         header.MigrationId.ShouldBe(Guid.Parse("5e366d33-5209-4fc5-bac6-1529bc5e95d4"));
-        header.DbVersion.ShouldBe("2024-11-13T12:00:00");
+        header.DbVersion.ShouldBe("20241113-120000");
         header.Metadata["author"].ShouldBe("testy");
     }
 
@@ -34,7 +34,7 @@ public class SequentialSourceReaderTests
         using var reader = new StringReader(
             """
             -- [head]
-            -- [dbVersion: 2024-11-13.00005]
+            -- [dbVersion: 20241113-202500]
             -- [metadata.author: testy]
             -- [/head]
             """
@@ -67,7 +67,7 @@ public class SequentialSourceReaderTests
             """
             -- [head]
             -- [id: 5e366d33-5209-4fc5-bac6-1529bc5e95d4]
-            -- [dbVersion: 2024-11-13.00005]
+            -- [dbVersion: 20241113-203000]
             -- [metadata.author: testy]
             -- [metadata.author: mctesterson]
             -- [/head]
