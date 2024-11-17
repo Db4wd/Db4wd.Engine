@@ -88,7 +88,7 @@ internal sealed class SchemaManager(
             """,
             new {schema = Constants.SchemaName});
 
-        return count == 6;
+        return count == 7;
     }
 
     /// <inheritdoc />

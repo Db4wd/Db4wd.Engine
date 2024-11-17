@@ -29,6 +29,7 @@ public class UnitDatabase
 
     public readonly List<Operation> Migrations = [];
     public readonly List<Operation> Rollbacks = [];
+    public readonly List<MigrationHistory> Logs = [];
 
     public DateTime NextDate() => dates.Dequeue();
     public Guid NextGuid() => guids.Dequeue();
@@ -36,11 +37,20 @@ public class UnitDatabase
     public void SaveDetail(MigrationOperationDetail detail)
     {
         var logId = NextGuid();
+        var now = NextDate();
+        
+        Logs.Add(new MigrationHistory(
+            detail.MigrationId,
+            logId,
+            now,
+            detail.Operation.ToString(),
+            detail.Agent,
+            detail.Host));
 
         switch (detail.Operation)
         {
             case SourceOperation.Migrate:
-                Migrations.Add(new Operation(logId, NextDate(), detail));
+                Migrations.Add(new Operation(logId, now, detail));
                 break;
             
             case SourceOperation.Rollback:
@@ -60,7 +70,7 @@ public class UnitDatabase
                     Metadata = null,
                     OperationTracker = null
                 };
-                Rollbacks.Add(new Operation(logId, NextDate(), detail));
+                Rollbacks.Add(new Operation(logId, now, detail));
                 break;
         }
     }

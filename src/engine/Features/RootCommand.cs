@@ -61,7 +61,12 @@ internal static class RootCommand
 
         command.ConfigureOptions(options =>
         {
-            options.ValueConverters.Add(new KeyValuePairConverter());
+            options.ValueConverters =
+            [
+                new KeyValuePairConverter(),
+                new PartialGuidConverter(),
+                new PartialNullableGuidConverter()
+            ];
 
             options.HelpProvider = new DefaultHelpProvider(new DefaultHelpOptions
             {

@@ -17,6 +17,13 @@ internal sealed class PostgresMetadataContext(
     }
 
     /// <inheritdoc />
+    public async Task<IList<MigrationEntry>> GetEntriesWithTagAsync(KeyValuePair<string, string> tag, int limit, CancellationToken cancellationToken)
+    {
+        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
+        return await Queries.FindMetadataTag.QueryAsync(connection, tag, agentContext.TimeZoneOffset, limit);
+    }
+
+    /// <inheritdoc />
     public async Task<IList<MigrationHistory>> GetHistoryAsync(Guid migrationId, int limit,
         CancellationToken cancellationToken)
     {
@@ -50,6 +57,15 @@ internal sealed class PostgresMetadataContext(
     {
         await using var connection = await connectionFactory.CreateAsync(cancellationToken);
         return await Queries.GetBlob.QueryAsync(connection, migrationId);
+    }
+
+    /// <inheritdoc />
+    public async Task<IList<MigrationHistory>> GetLogEntriesAsync(
+        LogSearchParameters parameters, 
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
+        return await Queries.GetLogs.QueryAsync(connection, parameters, agentContext.TimeZoneOffset);
     }
 
     /// <inheritdoc />

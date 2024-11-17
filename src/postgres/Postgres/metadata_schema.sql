@@ -59,14 +59,30 @@ create table __schema__.metrics(
 -- [go]
 create view __schema__.migrations_view as
 select src.*
-from pgfwd_meta.migrations src
+from __schema__.migrations src
 where not exists (
-    select *
+    select migrationid,
+           ('00000000-0000-0000-0000-0000' || substring(migrationid::text, 29))::uuid as partialid,
+           dbversion,
+           logid,
+           sourcepath,
+           sourcefile,
+           sha
     from __schema__.metadata md
     where md.migrationid = src.migrationid
       and md.key = 'pgfwd/internalMigration'
       and md.value = 'true'
-);    
+);
+-- [go]
+create view __schema__.log_view as
+select logid,
+       migrationid,
+       ('00000000-0000-0000-0000-0000' || substring(migrationid::text, 29))::uuid as partialid,
+       dateapplied,
+       operation,
+       agent,
+       host
+from __schema__.log;
 -- [/up]
 
 -- [down]

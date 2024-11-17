@@ -8,11 +8,11 @@
     "exception": "(none)"
   },
   {
-    "simple": "migration_02.sql  1/1/2025 1:00:00\u202FAM    cbba9340  50f1f228-9707-4e10-8add-520a1a910c99",
+    "simple": "migration_02.sql  1/1/2025 1:00:00 AM    cbba9340  50f1f228-9707-4e10-8add-520a1a910c99",
     "exception": "(none)"
   },
   {
-    "simple": "migration_01.sql  1/1/2025 12:00:00\u202FAM   88d3ac73  d5de9297-b2d1-49c6-a634-18e8113255d5",
+    "simple": "migration_01.sql  1/1/2025 12:00:00 AM   88d3ac73  d5de9297-b2d1-49c6-a634-18e8113255d5",
     "exception": "(none)"
   }
 ]

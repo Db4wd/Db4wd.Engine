@@ -30,6 +30,24 @@ public class UnitMetadataContext(UnitDatabase database) : IMetadataContext
     }
 
     /// <inheritdoc />
+    public async Task<IList<MigrationEntry>> GetEntriesWithTagAsync(KeyValuePair<string, string> tag, int limit,
+        CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+        return database.Migrations.Where(m => m.Detail.Metadata?.TryGetValue(tag.Key, out var value) == true
+                                              && value.Contains(tag.Value))
+            .Select(m => m.Detail)
+            .Select(d => new MigrationEntry(
+                d.MigrationId,
+                d.DbVersion,
+                database.Logs.First(l => l.MigrationId == d.MigrationId).DateApplied,
+                d.SourcePath,
+                d.SourceFile,
+                d.BlobInfo!.Sha))
+            .ToArray();
+    }
+
+    /// <inheritdoc />
     public async Task<IList<MigrationHistory>> GetHistoryAsync(
         Guid migrationId, 
         int limit, 
@@ -112,5 +130,21 @@ public class UnitMetadataContext(UnitDatabase database) : IMetadataContext
                 entry.Detail.BlobInfo!.Compression,
                 entry.Detail.BlobInfo!.Encoding,
                 entry.Detail.BlobInfo!.CompressedBytes);
+    }
+
+    /// <inheritdoc />
+    public async Task<IList<MigrationHistory>> GetLogEntriesAsync(LogSearchParameters parameters, CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+        
+        var logs = database.Logs.Where(log =>
+            (parameters.MigrationId == null || log.MigrationId == parameters.MigrationId) &&
+            (parameters.RangeStart == null || log.DateApplied >= parameters.RangeStart) &&
+            (parameters.RangeEnd == null || log.DateApplied <= parameters.RangeEnd) &&
+            (parameters.Operation == null || log.Operation == parameters.Operation) &&
+            (parameters.Agent == null || log.Agent == parameters.Agent) &&
+            (parameters.Host == null || log.Host == parameters.Host));
+
+        return logs.ToArray();
     }
 }

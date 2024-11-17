@@ -38,7 +38,7 @@ var engine = builder.Build();
 //            metadata delete
 
 var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-var common = $"--log-level:debug --env:{profile}/postgres-local.env";
+var common = $"--log-level:debug --env:{profile}/local-postgres.env";
 var init = $"init {common}";
 var newTemplate = $"new {profile}/migrations/migration_00001.sql --tag task=DEV_10056 {common}";
 var apply = $"apply --base-path {profile}/migrations --statement-log-level debug --tag:build=a0029eff10299 {common}";
@@ -49,6 +49,7 @@ var status = $"status {common}";
 var audit = $"audit --base-path {profile}/migrations {common}";
 var source = $"source 4347c991-072e-4b5f-a854-c374b010a23a {common}";
 var sourceToFile = $"source 4347c991-072e-4b5f-a854-c374b010a23a --out {profile}/migration_00001.restored.sql {common}";
+var log = $"log --id 26b66b5b {common}";
 
 
-return await engine.ExecuteAsync(args);    
+return await engine.ExecuteAsync(log.Split(' '));    

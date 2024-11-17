@@ -13,7 +13,7 @@ internal static class StartupLogger
 
     public static void Flush(ILogger logger)
     {
-        foreach (var action in LogActions)
+        foreach (var action in LogActions.ToArray())
         {
             action(logger);
         }

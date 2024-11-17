@@ -1,0 +1,19 @@
+﻿[
+  {
+    "complex": {
+      "Found": {},
+      "@logs": [
+        {
+          "MigrationId": "d5de9297-b2d1-49c6-a634-18e8113255d5",
+          "LogId": "eeb2db51-72b7-46b9-bfdb-f3d99d518c00",
+          "DateApplied": "2025-01-01T00:00:00",
+          "Operation": "Migrate",
+          "Agent": "xunit",
+          "Host": "test-host"
+        }
+      ],
+      "{OriginalFormat}": "{Found} logs =\n{@logs}"
+    },
+    "exception": "(none)"
+  }
+]
