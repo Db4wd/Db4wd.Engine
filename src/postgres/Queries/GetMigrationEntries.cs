@@ -6,26 +6,26 @@ namespace DbForward.Postgres.Queries;
 
 internal static class GetMigrationEntries
 {
-    internal static async Task<IList<MigrationEntry>> QueryAsync(
-        NpgsqlConnection connection,
-        TimeSpan tzOffset)
+    internal static async Task<IList<MigrationEntry>> QueryAsync(NpgsqlConnection connection, TimeSpan tzOffset)
     {
+        const string sql = $"""
+                            select m.migrationid, m.dbversion,
+                                   l.dateapplied,
+                                   m.sourcepath,
+                                   m.sourcefile,
+                                   m.sha
+                            from {Constants.SchemaName}.migrations_view m
+                            join {Constants.SchemaName}.log l on (l.logid = m.logid)
+                            where not exists (
+                                select *
+                                from {Constants.SchemaName}.metadata md
+                                where md.migrationid = m.migrationid and md.key = @key                        
+                            )
+                            order by l.dateapplied;
+                            """;
+        
         var results = await connection.QueryAsync(
-            $"""
-            select m.migrationid, m.dbversion,
-                   l.dateapplied,
-                   m.sourcepath,
-                   m.sourcefile,
-                   m.sha
-            from {Constants.SchemaName}.migrations_view m
-            join {Constants.SchemaName}.log l on (l.logid = m.logid)
-            where not exists (
-                select *
-                from {Constants.SchemaName}.metadata md
-                where md.migrationid = m.migrationid and md.key = @key                        
-            )
-            order by l.dateapplied;
-            """,
+            sql,
             new { key = "pgfwd/internalMigration" });
 
         return results

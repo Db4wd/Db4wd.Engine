@@ -17,21 +17,6 @@ internal sealed class PostgresMetadataContext(
     }
 
     /// <inheritdoc />
-    public async Task<IList<MigrationEntry>> GetEntriesWithTagAsync(KeyValuePair<string, string> tag, int limit, CancellationToken cancellationToken)
-    {
-        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
-        return await Queries.FindMetadataTag.QueryAsync(connection, tag, agentContext.TimeZoneOffset, limit);
-    }
-
-    /// <inheritdoc />
-    public async Task<IList<MigrationHistory>> GetHistoryAsync(Guid migrationId, int limit,
-        CancellationToken cancellationToken)
-    {
-        await using var connection = await connectionFactory.CreateAsync(cancellationToken);
-        return await Queries.GetMigrationHistory.QueryAsync(connection, migrationId, limit, agentContext.TimeZoneOffset);
-    }
-
-    /// <inheritdoc />
     public async Task<MigrationDetail?> GetDetailAsync(Guid migrationId, CancellationToken cancellationToken)
     {
         await using var connection = await connectionFactory.CreateAsync(cancellationToken);

@@ -80,11 +80,4 @@ public interface IDatabaseExtension
     /// <param name="cancellationToken">Token observed for cancellation</param>
     /// <returns>Task that returns an <see cref="IMetadataContext"/></returns>
     Task<IMetadataContext> CreateMetadataContextAsync(CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Called after a migration or rollback operation.
-    /// </summary>
-    /// <param name="cancellationToken">Token observed for cancellation</param>
-    /// <returns>Task</returns>
-    Task PostCheckStateAsync(CancellationToken cancellationToken);
 }

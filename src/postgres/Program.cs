@@ -49,7 +49,7 @@ var status = $"status {common}";
 var audit = $"audit --base-path {profile}/migrations {common}";
 var source = $"source 4347c991-072e-4b5f-a854-c374b010a23a {common}";
 var sourceToFile = $"source 4347c991-072e-4b5f-a854-c374b010a23a --out {profile}/migration_00001.restored.sql {common}";
-var log = $"log --id 26b66b5b {common}";
+var log = $"logs --tag author=dan {common}";
 
 
-return await engine.ExecuteAsync(log.Split(' '));    
+return await engine.ExecuteAsync(args);    

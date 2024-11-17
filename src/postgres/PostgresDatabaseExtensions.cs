@@ -112,10 +112,4 @@ public sealed class PostgresDatabaseExtensions(
     {
         return Task.FromResult(metadataContext);
     }
-
-    /// <inheritdoc />
-    public async Task PostCheckStateAsync(CancellationToken cancellationToken)
-    {
-        await Task.CompletedTask;
-    }
 }

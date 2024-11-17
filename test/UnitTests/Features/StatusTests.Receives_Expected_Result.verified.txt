@@ -93,5 +93,9 @@ Logs:
       "{OriginalFormat}": "{ok} current migration =\n{@detail}"
     },
     "exception": "(none)"
+  },
+  {
+    "simple": "Ok No migration(s) pending - database is up to date",
+    "exception": "(none)"
   }
 ]

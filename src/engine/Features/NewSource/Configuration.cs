@@ -8,6 +8,8 @@ public sealed class Options : ConnectionOptions
     public DirectoryInfo BasePath { get; set; } = default!;
 
     public KeyValuePair<string, string>[] Metadata { get; set; } = [];
+    
+    public bool Edit { get; set; }
 }
 
 public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
@@ -31,7 +33,10 @@ public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
                 ["--tag"],
                 arity: Arity.ZeroOrMany,
                 description: "A key/value pair that describes a metadata tag to include in the template",
-                operandSyntax: "KEY=VALUE");
+                operandSyntax: "KEY=VALUE")
+            .AddSwitch(x => x.Edit,
+                ["--edit"],
+                description: "Opens the configured editor ($DBFWD_EDITOR) for the file");
 
         builder.AddHandler(command);
     }

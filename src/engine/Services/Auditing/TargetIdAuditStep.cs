@@ -1,3 +1,4 @@
+using DbForward.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace DbForward.Services.Auditing;
@@ -10,7 +11,8 @@ public sealed class TargetIdAuditStep(ILogger<TargetIdAuditStep> logger) : ISour
         if (context.SourceTargets.Count == 0)
             return Task.FromResult(0);
         
-        if (context.TargetId == null || context.SourceTargets.Any(source => source.MigrationId == context.TargetId))
+        if (context.TargetId == null || context.SourceTargets.Any(source => PartialGuidEqualityComparer.Default
+                .Equals(source.MigrationId, context.TargetId)))
             return Task.FromResult(0);
 
         logger.LogError("Source for migration {id} not found.", context.TargetId);

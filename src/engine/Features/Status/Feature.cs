@@ -53,7 +53,11 @@ public sealed class Feature(IDatabaseExtension extension,
         }
 
         if (pendingSources.Length == 0)
+        {
+            logger.LogInformation("{Ok} No migration(s) pending - database is up to date", OkToken.Default);
             return 0;
+        }
+            
 
         AnsiConsole.WriteLine();
         

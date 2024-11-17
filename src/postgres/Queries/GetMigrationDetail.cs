@@ -1,5 +1,6 @@
 using Dapper;
 using DbForward.Models;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace DbForward.Postgres.Queries;
@@ -30,21 +31,18 @@ internal static class GetMigrationDetail
             $"""
              select category, key, value
              from {Constants.SchemaName}.metrics
-             where migrationid = @id;
+             where {Constants.SchemaName}.is_uuid_match(migrationid, @id);
              
              select key, value
              from {Constants.SchemaName}.metadata
-             where migrationid = @id;
-
-             select compression, encoding, contentlength
-             from {Constants.SchemaName}.blobs
-             where migrationid = @id;
+             where {Constants.SchemaName}.is_uuid_match(migrationid, @id);
 
              select l.dateapplied, l.agent, l.host, l.dateapplied,
-                    m.dbversion, m.logid, m.sourcepath, m.sourcefile, m.sha
+                    m.dbversion, m.logid, m.sourcepath, m.sourcefile, m.sha,
+                    m.migrationid
              from {Constants.SchemaName}.migrations_view m
              join {Constants.SchemaName}.log l on (l.logid = m.logid)
-             where m.migrationid = @id;
+             where {Constants.SchemaName}.is_uuid_match(m.migrationid, @id);
              """;
 
         var multiReader = await connection.QueryMultipleAsync(sql, new { id });
@@ -67,12 +65,13 @@ internal static class GetMigrationDetail
             metadataDictionary[record.key] = record.value;
         }
 
-        var (_, migration) = (
-            await multiReader.ReadSingleAsync(), 
-            await multiReader.ReadSingleAsync());
+        var migration = await multiReader.ReadSingleOrDefaultAsync();
+
+        if (migration == null)
+            return null;
 
         return new MigrationDetail(
-            id,
+            migration.migrationid,
             migration.dbversion,
             migration.dateapplied.Add(tzOffset),
             migration.logid,

@@ -12,25 +12,6 @@ public interface IMetadataContext : IAsyncDisposable
     Task<IList<MigrationEntry>> GetEntriesAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Gets applied migrations with the given metadata value.
-    /// </summary>
-    /// <param name="tag">Tag to search.</param>
-    /// <param name="limit">Maximum number of entries to return</param>
-    /// <param name="cancellationToken">Token observed for cancellation</param>
-    /// <returns>Task that returns a list of <see cref="MigrationEntry"/></returns>
-    Task<IList<MigrationEntry>> GetEntriesWithTagAsync(KeyValuePair<string, string> tag, int limit,
-        CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Gets the history for a particular migration.
-    /// </summary>
-    /// <param name="migrationId">Migrationid</param>
-    /// <param name="limit">Maximum number of records to return</param>
-    /// <param name="cancellationToken">Token observed for cancellation</param>
-    /// <returns>Task that returns a list of <see cref="MigrationHistory"/> objects.</returns>
-    Task<IList<MigrationHistory>> GetHistoryAsync(Guid migrationId, int limit, CancellationToken cancellationToken);
-
-    /// <summary>
     /// Gets detail for a migration id.
     /// </summary>
     /// <param name="migrationId">Migration id</param>

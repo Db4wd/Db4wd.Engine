@@ -83,7 +83,4 @@ public class UnitExtension(UnitDatabase? db = null) : IDatabaseExtension
         await Task.CompletedTask;
         return new UnitMetadataContext(database);
     }
-
-    /// <inheritdoc />
-    public Task PostCheckStateAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

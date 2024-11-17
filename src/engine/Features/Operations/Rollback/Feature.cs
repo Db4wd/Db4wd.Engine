@@ -36,6 +36,6 @@ public sealed class Feature(
         IDbVersionComparer versionComparer) => sources
         .Where(source => appliedEntryIds.Contains(source.MigrationId))
         .OrderByDescending(source => source.DbVersion, versionComparer)
-        .TakeUntilInclusive(source => source.MigrationId == options.TargetId 
+        .TakeUntilInclusive(source => PartialGuidEqualityComparer.Default.Equals(source.MigrationId, options.TargetId)
                                       || source.DbVersion == options.TargetDbVersion);
 }

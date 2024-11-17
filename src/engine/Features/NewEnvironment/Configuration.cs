@@ -10,6 +10,8 @@ public sealed class Options : GlobalOptions
     public bool Overwrite { get; set; }
 
     public KeyValuePair<string, string>[] Properties { get; set; } = [];
+    
+    public bool Edit { get; set; }
 }
 
 public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
@@ -36,7 +38,10 @@ public sealed class Configuration : IFeatureConfiguration<GlobalOptions>
                 ["--prop"],
                 arity: Arity.ZeroOrMany,
                 description: "A key/value pair that describes a property to include in the file",
-                operandSyntax: "KEY=VALUE");
+                operandSyntax: "KEY=VALUE")
+            .AddSwitch(x => x.Edit,
+                ["--edit"],
+                description: "Opens the configured editor ($DBFWD_EDITOR) for the file");
 
         builder.AddHandler(command);
     }

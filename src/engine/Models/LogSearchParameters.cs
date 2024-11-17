@@ -7,4 +7,10 @@ public record LogSearchParameters(
     DateTime? RangeEnd,
     string? Operation,
     string? Agent,
-    string? Host);
+    string? Host,
+    string? DbVersion,
+    string? MetadataKey,
+    string? MetadataValue,
+    string? SourcePath,
+    string? SourceFile,
+    string? Sha);

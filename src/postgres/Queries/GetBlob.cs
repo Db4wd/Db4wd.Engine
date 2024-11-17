@@ -14,7 +14,7 @@ internal sealed class GetBlob
                     b.compression, b.encoding, b.content, b.contentlength
              from {Constants.SchemaName}.migrations_view m
              join {Constants.SchemaName}.blobs b on (b.migrationid = m.migrationid)
-             where m.migrationid = @id;             
+             where {Constants.SchemaName}.is_uuid_match(m.migrationid, @id);             
              """;
 
         var result = await connection.QuerySingleOrDefaultAsync(sql, new { id });
