@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace />
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.6.7" />
+    <PackageReference Include="vertical-cli" Version="1.0.8-dev" />
+    <PackageReference Include="vertical-spectreconsolelogger" Version="0.10.1-dev.20241201.35" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Scrutor" Version="5.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="DbForward\Engine\Help\HelpResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="DbForward\Engine\Help\HelpResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HelpResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

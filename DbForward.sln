@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC20DFF5-868D-4FDF-8F51-A373160946F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "providers", "providers", "{59AEAC34-642C-4F56-A246-3A382F89DCD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbForward.Postgres", "src\providers\postgres\DbForward.Postgres.csproj", "{3A1C182F-7BDC-4F24-818C-65EFD6A907FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbForward.Engine", "src\engine\DbForward.Engine.csproj", "{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A1C182F-7BDC-4F24-818C-65EFD6A907FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A1C182F-7BDC-4F24-818C-65EFD6A907FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A1C182F-7BDC-4F24-818C-65EFD6A907FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A1C182F-7BDC-4F24-818C-65EFD6A907FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59AEAC34-642C-4F56-A246-3A382F89DCD2} = {FC20DFF5-868D-4FDF-8F51-A373160946F7}
+		{3A1C182F-7BDC-4F24-818C-65EFD6A907FC} = {59AEAC34-642C-4F56-A246-3A382F89DCD2}
+		{8BED4A65-BFAB-4978-AE36-A0A6CF0466F6} = {FC20DFF5-868D-4FDF-8F51-A373160946F7}
+	EndGlobalSection
+EndGlobal

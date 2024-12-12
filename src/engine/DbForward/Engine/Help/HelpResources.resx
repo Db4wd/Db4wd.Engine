@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="root" xml:space="preserve">
+        <value>Manages and tracks schema and data migrations in a database.</value>
+    </data>
+    <data name="globaloptions.loglevel" xml:space="preserve">
+        <value>The verbosity of logging output ([m]inimal, [n]ormal, or [d]etailed).</value>
+    </data>
+    <data name="globaloptions.environmentfile" xml:space="preserve">
+        <value>The path of the file tthat contains connection key/value pairs to include in the environment.</value>
+    </data>
+    <data name="globaloptions.noterminal" xml:space="preserve">
+        <value>Indicates the process does not have an interactive terminal. When specified, output formatting is disabled.</value>
+    </data>
+    <data name="root version" xml:space="preserve">
+        <value>Print the version of the current application.</value>
+    </data>
+    <data name="connectionoptions.connectionstring" xml:space="preserve">
+        <value>A composite connection string used by the database driver.</value>
+    </data>
+    <data name="connectionoptions.host" xml:space="preserve">
+        <value>The host of the database server.</value>
+    </data>
+    <data name="connectionoptions.port" xml:space="preserve">
+        <value>The port used in the database network connection.</value>
+    </data>
+    <data name="connectionoptions.database" xml:space="preserve">
+        <value>The target database to manage migrations in.</value>
+    </data>
+    <data name="connectionoptions.userid" xml:space="preserve">
+        <value>The user id used in the connection credential.</value>
+    </data>
+    <data name="connectionoptions.password" xml:space="preserve">
+        <value>The password used in the connection credential.</value>
+    </data>
+    <data name="connectionoptions.properties" xml:space="preserve">
+        <value>One or properties used by the database driver expressed as a key/value pair in the form KEY=VALUE.</value>
+    </data>
+    <data name="newenvironmentoptions.outputfile" xml:space="preserve">
+        <value>Path to the target file to write (required).</value>
+    </data>
+    <data name="newenvironmentoptions.overwrite" xml:space="preserve">
+        <value>Overwrites &lt;OUTPUT_FILE&gt; if it already exists.</value>
+    </data>
+    <data name="root env new-file" xml:space="preserve">
+        <value>Creates a new environment file that contains connection properties.</value>
+    </data>
+    <data name="newenvironmentoptions.edit" xml:space="preserve">
+        <value>Launches an editor via the shell if one is configured with $DB4_EDITOR.</value>
+    </data>
+    <data name="root env" xml:space="preserve">
+        <value>Lists variables or creates environment files.</value>
+    </data>
+    <data name="root env vars" xml:space="preserve">
+        <value>Lists the environment variables the application supports.</value>
+    </data>
+</root>
